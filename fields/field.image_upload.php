@@ -78,7 +78,7 @@
 			$order = $this->get('sortorder');
 
 			$label = Widget::Label(
-				__('Minimun width (px)'),
+				__('Mimimum width (px)'),
 				Widget::Input("fields[{$order}][min_width]", $this->get('min_width'))
 			);
 			
@@ -97,7 +97,7 @@
 			$order = $this->get('sortorder');
 
 			$label = Widget::Label(
-				__('Minimun height (px)'),
+				__('Mimimum height (px)'),
 				Widget::Input("fields[{$order}][min_height]", $this->get('min_height'))
 			);
 			
