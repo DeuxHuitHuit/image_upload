@@ -1,7 +1,7 @@
 Field: Image upload
 ==============
 
-A more specialized field for image uploads.
+A specialized field for image uploads.
 
 * Version: 1.0
 * Build Date: 2011-11-15
@@ -17,7 +17,7 @@ Thank you all other Symphony & Extensions developers for your inspirational work
 
 # 1 About #
 
-An enhancement of the classic Upload field. 
+An specialized version of the classic Upload field for images: 
 
 - it accepts only images: bmp, jpg, jpeg, png and gif.
 - optional, set a minimum width and / or height. If 0 or empty, no limit will exist.
@@ -38,7 +38,7 @@ An enhancement of the classic Upload field.
 
          Symphony | Field: Image Upload
 ------------------|----------------
-      2.0 — *     | latest](https://github.com/vlad-ghita/image_upload)
+      2.0 — *     | [latest](https://github.com/vlad-ghita/image_upload)
 
 
 
