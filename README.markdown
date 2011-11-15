@@ -17,7 +17,7 @@ Thank you all other Symphony & Extensions developers for your inspirational work
 
 # 1 About #
 
-An specialized version of the classic Upload field for images: 
+A specialized version of the classic Upload field for images: 
 
 - it accepts only images: bmp, jpg, jpeg, png and gif.
 - optional, set a minimum width and / or height. If 0 or empty, no limit will exist.
