@@ -18,10 +18,10 @@
 		'Image Upload' => 
 		false,
 
-		'Mimimum width (px)' => 
+		'Minimum width (px)' => 
 		'Lungime minimă (px)',
 
-		'Mimimum height (px)' => 
+		'Minimum height (px)' => 
 		'Înălţime minimă (px)',
 		
 		'If empty or 0, no limit will be set.' =>
