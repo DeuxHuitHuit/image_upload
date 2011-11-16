@@ -51,7 +51,7 @@
 				require_once(EXTENSIONS . '/jit_image_manipulation/lib/filters/filter.resize.php');
 
 				$image->applyFilter('resize', array($width, $height));
-				$image->save($file, 100, null, $mimetype);
+				$image->save($file, null, null, $mimetype);
 			}
 			
 			return true;
