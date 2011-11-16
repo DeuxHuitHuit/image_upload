@@ -3,8 +3,8 @@ Field: Image upload
 
 A specialized field for image uploads.
 
-* Version: 1.0
-* Build Date: 2011-11-15
+* Version: 1.0.1
+* Build Date: 2011-11-16
 * Authors:
 	- [Xander Group](http://www.xandergroup.ro)
 	- Vlad Ghita
@@ -44,6 +44,9 @@ A specialized version of the classic Upload field for images:
 
 
 # 4 Changelog #
+
+- 1.0.1
+    * Typo fix.
 
 - 1.0
     * Initial release

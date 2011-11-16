@@ -5,7 +5,7 @@
 		public function about() {
 			return array(
 				'name'			=> 'Field: Image Upload',
-				'version'		=> '1.0',
+				'version'		=> '1.0.1',
 				'release-date'	=> '2011-11-15',
 				'author' => array(
 					array(
