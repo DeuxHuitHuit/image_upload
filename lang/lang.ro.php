@@ -24,8 +24,11 @@
 		'Minimum height (px)' => 
 		'Înălţime minimă (px)',
 		
-		'If empty or 0, no limit will be set.' =>
-		'Dacă este necompletat sau 0, nu va fi setată limita.',
+		'If empty or 0, no minimum limit will be set.' =>
+		'Dacă este necompletat sau 0, nu va fi setată limita minimă.',
+		
+		'If empty or 0, no maximum resize limit will be set.' =>
+		'Dacă este necompletat sau 0, nu va fi setată limita maximă de redimensionare.',
 
 		'%s Create unique filenames' => 
 		'%s Crează nume unice',
@@ -38,4 +41,5 @@
 		
 		'Uploaded file is not an image.' =>
 		'Fişierul încărcat nu este o imagine.'
+		
 	);

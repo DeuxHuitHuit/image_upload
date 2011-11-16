@@ -3,13 +3,18 @@ Field: Image upload
 
 A specialized field for image uploads.
 
+<<<<<<< HEAD
 * Version: 1.0.1
+=======
+* Version: 1.1
+>>>>>>> dev
 * Build Date: 2011-11-16
 * Authors:
 	- [Xander Group](http://www.xandergroup.ro)
 	- Vlad Ghita
 * Requirements:
 	- Symphony 2.0 or above
+	- If using maximum width / height, [JIT](https://github.com/symphonycms/jit_image_manipulation) is required
 
 Thank you all other Symphony & Extensions developers for your inspirational work.
 
@@ -20,8 +25,11 @@ Thank you all other Symphony & Extensions developers for your inspirational work
 A specialized version of the classic Upload field for images: 
 
 - it accepts only images: bmp, jpg, jpeg, png and gif.
-- optional, set a minimum width and / or height. If 0 or empty, no limit will exist.
+- optional, set a minimum width and / or height. If 0 or empty, no minimum limit will exist.
+- optional, set a maximum width and / or height. If 0 or empty, no maximum resize limit will exist.
 - optional, it will create unique filenames.
+
+**NB:** The resize takes places upon save, no matter new entry or edit entry.
 
 
 
@@ -45,8 +53,11 @@ A specialized version of the classic Upload field for images:
 
 # 4 Changelog #
 
-- 1.0.1
+- 1.1 : 16 nov 2011
+    * Added support for maximum width / height with smart resize using JIT mode 1.
+
+- 1.0.1 : 16 nov 2011
     * Typo fix.
 
-- 1.0
+- 1.0 : 15 nov 2011
     * Initial release
