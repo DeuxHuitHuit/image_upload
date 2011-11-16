@@ -28,7 +28,7 @@
 		 * @param integer $height - desired height of the image
 		 * @param string $mimetype - image type
 		 * 
-		 * @return void
+		 * @return boolean - true if success, false otherwise
 		 */
 		public static function resize($file, $width, $height, $mimetype){
 			// process image using JIT mode 1
@@ -40,12 +40,12 @@
 						
 					// if not and Image, stick with original version
 					if( !$image instanceof Image ) {
-						return $result;
+						return false;
 					}
 				}
 				// if problems appear, stick with original version
 				catch(Exception $e){
-					return $result;
+					return false;
 				}
 
 				require_once(EXTENSIONS . '/jit_image_manipulation/lib/filters/filter.resize.php');
@@ -303,10 +303,10 @@
 							return $result;
 						}
 						
-						self::resize($file, $width, $height, $result['mimetype']);
-						
-						$result['size'] = filesize($file);
-						$result['meta'] = serialize( self::getMetaInfo($file, $result['mimetype']) );
+						if( self::resize($file, $width, $height, $result['mimetype']) ){
+							$result['size'] = filesize($file);
+							$result['meta'] = serialize( self::getMetaInfo($file, $result['mimetype']) );
+						}
 					}
 				}
 			}
@@ -346,9 +346,9 @@
 						}
 						
 						if( $allowed ){
-							self::resize($file, $width, $height, $data['type']);
-							
-							$data['size'] = filesize($file);
+							if( self::resize($file, $width, $height, $data['type']) ){
+								$data['size'] = filesize($file);
+							}
 						}
 					}
 				}
