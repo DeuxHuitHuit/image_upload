@@ -1,12 +1,21 @@
 <?php
 
+	if (!defined('__IN_SYMPHONY__')) die('<h2>Symphony Error</h2><p>You cannot directly access this file</p>');
+	
+	
+	
+	define_safe(IMAGE_UPLOAD_NAME, 'Field: Image Upload');
+	define_safe(IMAGE_UPLOAD_GROUP, 'image_upload');
+	
+	
+	
 	class extension_image_upload extends Extension {
 
 		public function about() {
 			return array(
-				'name'			=> 'Field: Image Upload',
-				'version'		=> '1,0',
-				'release-date'	=> '2011-11-15',
+				'name'			=> IMAGE_UPLOAD_NAME,
+				'version'		=> '1.1',
+				'release-date'	=> '2011-11-16',
 				'author' => array(
 					array(
 						'name' => 'Xander Group',
@@ -18,14 +27,12 @@
 						'email' => 'vlad.ghita@xandergroup.ro',
 					),
 				),
-				'description'	=> 'Upload images. Optionally unique names and minimum width / height.'
+				'description'	=> 'Upload images. Optional unique names, set minimum width / height and maximum width / height.'
 			);
 		}
 
-		public function uninstall() {
-			Symphony::Database()->query("DROP TABLE `tbl_fields_image_upload`");
-		}
-
+		
+		
 		public function install() {
 			return Symphony::Database()->query(
 				"CREATE TABLE `tbl_fields_image_upload` (
@@ -38,8 +45,57 @@
 				 `min_height` int(11) unsigned,
 				  PRIMARY KEY (`id`),
 				  KEY `field_id` (`field_id`)
-				) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;"
+				) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;"
 			);
 		}
-
+		
+		public function update($previous_version){
+			if( version_compare($previous_version, '1.1', '<') ){
+				$query = "ALTER TABLE `tbl_fields_image_upload` 
+					ADD `max_width` int(11) unsigned,
+					ADD `max_height` int(11) unsigned,
+					DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci";
+				
+				return (boolean) Symphony::Database()->query($query);
+			}
+			
+			return true;
+		}
+		
+		public function uninstall() {
+			Symphony::Database()->query("DROP TABLE `tbl_fields_image_upload`");
+		}
+		
+		
+		
+		public function getSubscribedDelegates(){
+			return array(	
+				array(
+					'page' => '/system/preferences/',
+					'delegate' => 'AddCustomPreferenceFieldsets',
+					'callback' => 'dAddCustomPreferenceFieldsets'
+				),				
+			);
+		}
+		
+		
+		
+		public function dAddCustomPreferenceFieldsets($context){
+			$group = new XMLElement('fieldset');
+			$group->setAttribute('class', 'settings');
+			$group->appendChild(new XMLElement('legend', IMAGE_UPLOAD_NAME));
+			
+			$group->appendChild(
+				Widget::Label(
+					__('Path to ImageMagick / GraphicsMagick'),
+					Widget::Input(
+						'settings['.IMAGE_UPLOAD_GROUP.'][im_path]',
+						General::Sanitize(Symphony::Configuration()->get('im_path', IMAGE_UPLOAD_GROUP))
+					)
+				)
+			);
+			
+			$context['wrapper']->appendChild($group);
+		}
+		
 	}
