@@ -25,7 +25,7 @@
 				$settings['unique'] = 'yes';
 			}
 			
-			if( !isset($settings['mid_width']) ){
+			if( !isset($settings['min_width']) ){
 				$settings['min_width'] = 800;
 			}
 			
