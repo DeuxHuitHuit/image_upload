@@ -14,7 +14,7 @@
 		public function about() {
 			return array(
 				'name' => IMAGE_UPLOAD_NAME,
-				'version' => '1.1.2',
+				'version' => '1.1.3',
 				'release-date' => '2011-11-17',
 				'author' => array(
 					array(

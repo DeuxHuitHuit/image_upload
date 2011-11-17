@@ -51,7 +51,7 @@
 				require_once(EXTENSIONS . '/jit_image_manipulation/lib/filters/filter.resize.php');
 
 				$image->applyFilter('resize', array($width, $height));
-				$image->save($file, null, null, $mimetype);
+				$image->save($file, 85, null, $mimetype);
 			}
 			
 			return true;
@@ -281,31 +281,13 @@
 					
 					if( is_file($file = WORKSPACE . $result['file']) ){
 						
-						$width = 0;
-						$height = 0;
+						$dimensions = $this->_figureDimensions( self::getMetaInfo($file, $result['mimetype']) );
 						
-						$meta = self::getMetaInfo($file, $result['mimetype']);
-						
-						$img_width = $meta['width'];
-						$img_height = $meta['height'];
-	
-						// bigest size
-						$b_size = $img_width > $img_height ? 'w' : 'h';
-						
-						// figure out dimensions
-						if( ($b_size == 'w') && ($img_width > $max_width) ){
-							$width = $max_width;
-						}
-						elseif( ($b_size == 'h') && ($img_height > $max_height) ){
-							$height = $max_height;
-						}
-						else{
-							return $result;
-						}
-						
-						if( self::resize($file, $width, $height, $result['mimetype']) ){
-							$result['size'] = filesize($file);
-							$result['meta'] = serialize( self::getMetaInfo($file, $result['mimetype']) );
+						if( $dimensions['proceed'] ){
+							if( self::resize($file, $dimensions['width'], $dimensions['height'], $result['mimetype']) ){
+								$result['size'] = filesize($file);
+								$result['meta'] = serialize( self::getMetaInfo($file, $result['mimetype']) );
+							}
 						}
 					}
 				}
@@ -322,31 +304,10 @@
 					
 					if( is_file($file = $data['tmp_name']) ){
 						
-						$width = 0;
-						$height = 0;
-						$allowed = true;
+						$dimensions = $this->_figureDimensions( self::getMetaInfo($file, $data['type']) );
 						
-						$meta = self::getMetaInfo($file, $data['type']);
-						
-						$img_width = $meta['width'];
-						$img_height = $meta['height'];
-	
-						// bigest size
-						$b_size = $img_width > $img_height ? 'w' : 'h';
-						
-						// figure out dimensions
-						if( ($b_size == 'w') && ($img_width > $max_width) ){
-							$width = $max_width;
-						}
-						elseif( ($b_size == 'h') && ($img_height > $max_height) ){
-							$height = $max_height;
-						}
-						else{
-							$allowed = false;
-						}
-						
-						if( $allowed ){
-							if( self::resize($file, $width, $height, $data['type']) ){
+						if( $dimensions['proceed'] ){
+							if( self::resize($file, $dimensions['width'], $dimensions['height'], $data['type']) ){
 								$data['size'] = filesize($file);
 							}
 						}
@@ -365,6 +326,54 @@
 	/*-------------------------------------------------------------------------
 		In-house utilities:
 	-------------------------------------------------------------------------*/
+		
+		private function _figureDimensions($meta){
+			$proceed = true;
+			$width = 0;
+			$height = 0;
+			
+			$max_width = $this->get('max_width');
+			$max_height = $this->get('max_height');
+
+			$img_width = $meta['width'];
+			$img_height = $meta['height'];
+
+			// bigest size
+			$b_size = $img_width > $img_height ? 'w' : 'h';
+
+			// figure out dimensions
+			if( ($b_size == 'w') && ($img_width > $max_width) ){
+				$width = $max_width;
+				$b_size_ratio = $img_width / $width;
+					
+				// make sure resulting height is not greater than max_height.
+				// if so, scale according to height
+				if( $img_height / $b_size_ratio > $max_height ){
+					$width = 0;
+					$height = $max_height;
+				}
+			}
+			elseif( ($b_size == 'h') && ($img_height > $max_height) ){
+				$height = $max_height;
+				$b_size_ratio = $img_height / $height;
+					
+				// make sure resulting width is not greater than max_width.
+				// if so, scale according to width
+				if( $img_width / $b_size_ratio > $max_width ){
+					$width = $max_width;
+					$height = 0;
+				}
+			}
+			else{
+				$proceed = false;
+			}
+			
+			return array(
+				'proceed' => $proceed,
+				'width' => $width,
+				'height' => $height
+			);
+		}
 		
 		private function _getUniqueFilename($filename) {
 			// since unix timestamp is 10 digits, the unique filename will be limited to ($crop+1+10) characters;

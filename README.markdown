@@ -3,7 +3,7 @@ Field: Image upload
 
 A specialized field for image uploads.
 
-* Version: 1.1.1
+* Version: 1.1.3
 * Build Date: 2011-11-17
 * Authors:
 	- [Xander Group](http://www.xandergroup.ro)
@@ -48,6 +48,13 @@ A specialized version of the classic Upload field for images:
 
 
 # 4 Changelog #
+
+- 1.1.3 : 17 nov 2011
+    * Refined image dimension maximum limits discovery. It now properly resizes images so the result fits both max_width and max_height.
+	* Increased desired image quality from 80 to 85.
+
+- 1.1.2 : 17 nov 2011
+    * Added missing `max_width` and `max_height` table columns.
 
 - 1.1.1 : 17 nov 2011
     * Removed code for Imagemagick.
