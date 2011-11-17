@@ -3,12 +3,8 @@ Field: Image upload
 
 A specialized field for image uploads.
 
-<<<<<<< HEAD
-* Version: 1.0.1
-=======
-* Version: 1.1
->>>>>>> dev
-* Build Date: 2011-11-16
+* Version: 1.1.1
+* Build Date: 2011-11-17
 * Authors:
 	- [Xander Group](http://www.xandergroup.ro)
 	- Vlad Ghita
@@ -52,6 +48,9 @@ A specialized version of the classic Upload field for images:
 
 
 # 4 Changelog #
+
+- 1.1.1 : 17 nov 2011
+    * Removed code for Imagemagick.
 
 - 1.1 : 16 nov 2011
     * Added support for maximum width / height with smart resize using JIT mode 1.

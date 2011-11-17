@@ -14,8 +14,8 @@
 		public function about() {
 			return array(
 				'name' => IMAGE_UPLOAD_NAME,
-				'version' => '1.1',
-				'release-date' => '2011-11-16',
+				'version' => '1.1.1',
+				'release-date' => '2011-11-17',
 				'author' => array(
 					array(
 						'name' => 'Xander Group',
@@ -64,38 +64,6 @@
 		
 		public function uninstall() {
 			Symphony::Database()->query("DROP TABLE `tbl_fields_image_upload`");
-		}
-		
-		
-		
-		public function getSubscribedDelegates(){
-			return array(	
-				array(
-					'page' => '/system/preferences/',
-					'delegate' => 'AddCustomPreferenceFieldsets',
-					'callback' => 'dAddCustomPreferenceFieldsets'
-				),				
-			);
-		}
-		
-		
-		
-		public function dAddCustomPreferenceFieldsets($context){
-			$group = new XMLElement('fieldset');
-			$group->setAttribute('class', 'settings');
-			$group->appendChild(new XMLElement('legend', IMAGE_UPLOAD_NAME));
-			
-			$group->appendChild(
-				Widget::Label(
-					__('Path to ImageMagick / GraphicsMagick'),
-					Widget::Input(
-						'settings['.IMAGE_UPLOAD_GROUP.'][im_path]',
-						General::Sanitize(Symphony::Configuration()->get('im_path', IMAGE_UPLOAD_GROUP))
-					)
-				)
-			);
-			
-			$context['wrapper']->appendChild($group);
 		}
 		
 	}
