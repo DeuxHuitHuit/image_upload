@@ -14,7 +14,7 @@
 		public function about() {
 			return array(
 				'name' => IMAGE_UPLOAD_NAME,
-				'version' => '1.1.1',
+				'version' => '1.1.2',
 				'release-date' => '2011-11-17',
 				'author' => array(
 					array(
@@ -43,6 +43,8 @@
 				 `unique`  varchar(50),
 				 `min_width` int(11) unsigned,
 				 `min_height` int(11) unsigned,
+				 `max_width` int(11) unsigned,
+				 `max_height` int(11) unsigned,
 				  PRIMARY KEY (`id`),
 				  KEY `field_id` (`field_id`)
 				) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;"
