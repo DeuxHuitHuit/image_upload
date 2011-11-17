@@ -52,7 +52,7 @@
 		}
 		
 		public function update($previous_version){
-			if( version_compare($previous_version, '1.1', '<') ){
+			if( version_compare($previous_version, '1.1.3', '<') ){
 				$query = "ALTER TABLE `tbl_fields_image_upload` 
 					ADD `max_width` int(11) unsigned,
 					ADD `max_height` int(11) unsigned,
