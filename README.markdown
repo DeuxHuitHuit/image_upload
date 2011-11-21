@@ -49,6 +49,9 @@ A specialized version of the classic Upload field for images:
 
 # 4 Changelog #
 
+- 1.1.4 : 21 nov 2011
+    * Updates are now performed with error supression. No warnings will be issued.
+
 - 1.1.3 : 17 nov 2011
     * Refined image dimension maximum limits discovery. It now properly resizes images so the result fits both max_width and max_height.
 	* Increased desired image quality from 80 to 85.

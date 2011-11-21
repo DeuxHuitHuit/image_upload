@@ -14,8 +14,8 @@
 		public function about() {
 			return array(
 				'name' => IMAGE_UPLOAD_NAME,
-				'version' => '1.1.3',
-				'release-date' => '2011-11-17',
+				'version' => '1.1.4',
+				'release-date' => '2011-11-21',
 				'author' => array(
 					array(
 						'name' => 'Xander Group',
@@ -52,13 +52,16 @@
 		}
 		
 		public function update($previous_version){
-			if( version_compare($previous_version, '1.1.2', '<') ){
-				$query = "ALTER TABLE `tbl_fields_image_upload` 
+			if( version_compare($previous_version, '1.1', '<') ){
+				$query = "ALTER TABLE `tbl_fields_image_upload`
 					ADD `max_width` int(11) unsigned,
 					ADD `max_height` int(11) unsigned,
 					DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci";
 				
-				return (boolean) Symphony::Database()->query($query);
+				try {
+					Symphony::Database()->query($query);
+				}
+				catch (Exception $e) {}
 			}
 			
 			return true;
