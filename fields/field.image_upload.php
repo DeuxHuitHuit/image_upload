@@ -6,7 +6,7 @@
 	
 	
 	
-	final class fieldImage_upload extends fieldUpload {
+	class fieldImage_upload extends fieldUpload {
 		
 		public function __construct(&$parent){
 			parent::__construct($parent);
@@ -262,7 +262,6 @@
 		}
 		
 		public function processRawFieldData($data, &$status, $simulate = false, $entry_id = NULL) {
-			
 			if( is_array($data) && isset($data['name']) && ($this->get('unique') == 'yes') ){
 				$data['name'] = $this->getUniqueFilename($data['name']);
 			}
