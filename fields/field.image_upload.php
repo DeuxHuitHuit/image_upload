@@ -22,12 +22,12 @@
 		
 		/**
 		 * Resizes an Image to a given maximum width and height.
-		 * 
+		 *
 		 * @param string $file - absolute image path
 		 * @param integer $width - desired width of the image
 		 * @param integer $height - desired height of the image
 		 * @param string $mimetype - image type
-		 * 
+		 *
 		 * @return boolean - true if success, false otherwise
 		 */
 		public static function resize($file, $width, $height, $mimetype){
@@ -61,7 +61,7 @@
 		
 	/*-------------------------------------------------------------------------
 		Settings:
-	-------------------------------------------------------------------------*/	
+	-------------------------------------------------------------------------*/
 		
 		public function findDefaults(&$settings){
 			if( !isset($settings['unique']) ){
@@ -155,11 +155,11 @@
 		
 		/**
 		 * Append a dimension's Input HTML element.
-		 * 
+		 *
 		 * @param string $label_value - value of the label
 		 * @param string $setting - name of the setting
 		 * @param string $help_message - help message
-		 * 
+		 *
 		 * @return XMLElement - dimension element
 		 */
 		private function _addDimensionInput($label_value, $setting, $help_message){
@@ -168,14 +168,14 @@
 			$label = Widget::Label(
 				$label_value,
 				Widget::Input(
-					"fields[{$order}][{$setting}]", 
+					"fields[{$order}][{$setting}]",
 					sprintf('%s', $this->get($setting))
 				)
 			);
 			
 			$label->appendChild(
 				new XMLElement(
-					'p', 
+					'p',
 					$help_message,
 					array('class' => 'help', 'style' => 'margin: 5px 0 0 0;')
 				)
@@ -227,7 +227,7 @@
 		
 		public function checkPostFieldData($data, &$message, $entry_id = NULL) {
 			if( is_array($data) && isset($data['name']) && ($this->get('unique') == 'yes') ){
-				$data['name'] = $this->_getUniqueFilename($data['name']);
+				$data['name'] = $this->getUniqueFilename($data['name']);
 			}
 			
 			// run basic upload check
@@ -264,7 +264,7 @@
 		public function processRawFieldData($data, &$status, $simulate = false, $entry_id = NULL) {
 			
 			if( is_array($data) && isset($data['name']) && ($this->get('unique') == 'yes') ){
-				$data['name'] = $this->_getUniqueFilename($data['name']);
+				$data['name'] = $this->getUniqueFilename($data['name']);
 			}
 			
 			// file already exists in Symphony
@@ -281,7 +281,7 @@
 					
 					if( is_file($file = WORKSPACE . $result['file']) ){
 						
-						$dimensions = $this->_figureDimensions( self::getMetaInfo($file, $result['mimetype']) );
+						$dimensions = $this->figureDimensions( self::getMetaInfo($file, $result['mimetype']) );
 						
 						if( $dimensions['proceed'] ){
 							if( self::resize($file, $dimensions['width'], $dimensions['height'], $result['mimetype']) ){
@@ -304,7 +304,7 @@
 					
 					if( is_file($file = $data['tmp_name']) ){
 						
-						$dimensions = $this->_figureDimensions( self::getMetaInfo($file, $data['type']) );
+						$dimensions = $this->figureDimensions( self::getMetaInfo($file, $data['type']) );
 						
 						if( $dimensions['proceed'] ){
 							if( self::resize($file, $dimensions['width'], $dimensions['height'], $data['type']) ){
@@ -327,7 +327,7 @@
 		In-house utilities:
 	-------------------------------------------------------------------------*/
 		
-		private function _figureDimensions($meta){
+		protected function figureDimensions($meta){
 			$proceed = true;
 			$width = 0;
 			$height = 0;
@@ -375,7 +375,7 @@
 			);
 		}
 		
-		private function _getUniqueFilename($filename) {
+		protected function getUniqueFilename($filename) {
 			// since unix timestamp is 10 digits, the unique filename will be limited to ($crop+1+10) characters;
 			$crop  = '150';
 			return preg_replace("/(.*)(\.[^\.]+)/e", "substr('$1', 0, $crop).'-'.time().'$2'", $filename);
