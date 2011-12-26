@@ -4,7 +4,7 @@
 
 	<name>Image upload</name>
 
-	<description>Filed for uploading images with min width / height and maximum width / height.</description>
+	<description>A specialized filed for uploading images with min width/height and maximum width/height restrictions.</description>
 
 	<repo type="github">https://github.com/vlad-ghita/image_upload</repo>
 
