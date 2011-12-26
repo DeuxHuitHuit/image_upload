@@ -4,7 +4,7 @@
 	
 	
 	
-	define_safe(IMAGE_UPLOAD_NAME, 'Field: Image Upload');
+	define_safe(IMAGE_UPLOAD_NAME, 'Image Upload');
 	define_safe(IMAGE_UPLOAD_GROUP, 'image_upload');
 	
 	
@@ -20,7 +20,7 @@
 					array(
 						'name' => 'Xander Group',
 						'email' => 'symphonycms@xandergroup.ro',
-						'website' => 'www.xandergroup.ro'
+						'website' => 'www.xanderadvertising.com'
 					),
 					array(
 						'name' => 'Vlad Ghita',

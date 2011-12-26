@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<extension id="image_upload" status="released" xmlns="http://symphony-cms.com/schemas/extension/1.0">
+
+	<name>Image upload</name>
+
+	<description>Upload images with min width / height.</description>
+
+	<repo type="github">https://github.com/vlad-ghita/image_upload</repo>
+
+	<url type="discuss">http://symphony-cms.com/discuss/thread/80543/</url>
+
+	<types>
+		<type>Field Types</type>
+	</types>
+
+	<authors>
+		<author>
+			<name github="vlad-ghita" symphony="vladG">Vlad Ghita</name>
+			<email>vlad_micutul@yahoo.com</email>
+			<website>http://www.xanderadvertising.com</website>
+		</author>
+	</authors>
+
+	<dependencies>
+		<dependency version="1.12">jit_image_manipulation</dependency>
+	</dependencies>
+
+	<releases>
+		<release version="1.1.4" date="2011-11-21"><![CDATA[
+			* Updates are now performed with error supression. No warnings will be issued.
+		]]></release>
+		<release version="1.0" date="2011-11-15" min="2.0" />
+	</releases>
+
+</extension>
