@@ -34,7 +34,9 @@
 			// process image using JIT mode 1
 			if( Symphony::ExtensionManager()->fetchStatus('jit_image_manipulation') == EXTENSION_ENABLED ){
 				require_once(EXTENSIONS . '/jit_image_manipulation/lib/class.image.php');
-
+				
+				/*@var $image Image */
+				
 				try{
 					$image = Image::load($file);
 						
@@ -266,6 +268,8 @@
 				$data['name'] = $this->getUniqueFilename($data['name']);
 			}
 			
+			if( $data == null ) return parent::processRawFieldData($data, $status, $simulate, $entry_id);
+			
 			// file already exists in Symphony
 			if( is_string($data) ){
 				
@@ -327,7 +331,6 @@
 	-------------------------------------------------------------------------*/
 		
 		protected function figureDimensions($meta){
-			$proceed = true;
 			$width = 0;
 			$height = 0;
 			
@@ -336,39 +339,35 @@
 
 			$img_width = $meta['width'];
 			$img_height = $meta['height'];
+			
+			$ratio = $img_width / $img_height;
 
-			// bigest size
-			$b_size = $img_width > $img_height ? 'w' : 'h';
-
-			// figure out dimensions
-			if( ($b_size == 'w') && ($img_width > $max_width) ){
+			// if width exceeds
+			if( $img_width > $max_width ){
 				$width = $max_width;
-				$b_size_ratio = $img_width / $width;
-					
-				// make sure resulting height is not greater than max_height.
-				// if so, scale according to height
-				if( $img_height / $b_size_ratio > $max_height ){
+				$height = 0;
+				
+				// if resulting height doesn't fit, resize from height
+				if( $width / $ratio > $max_height ){
 					$width = 0;
 					$height = $max_height;
 				}
 			}
-			elseif( ($b_size == 'h') && ($img_height > $max_height) ){
+			
+			// if height exceeds
+			elseif( $img_height > $max_height ){
+				$width = 0;
 				$height = $max_height;
-				$b_size_ratio = $img_height / $height;
-					
-				// make sure resulting width is not greater than max_width.
-				// if so, scale according to width
-				if( $img_width / $b_size_ratio > $max_width ){
+				
+				// if resulting width doesn't fit, resize from width
+				if( $height / $ratio > $max_width ){
 					$width = $max_width;
 					$height = 0;
 				}
 			}
-			else{
-				$proceed = false;
-			}
 			
 			return array(
-				'proceed' => $proceed,
+				'proceed' => ($width != 0 && $height != 0),
 				'width' => $width,
 				'height' => $height
 			);

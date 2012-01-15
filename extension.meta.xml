@@ -27,9 +27,14 @@
 	</dependencies>
 
 	<releases>
+		<release version="1.1.5" date="2012-01-15"><![CDATA[
+			* Fixed a flaw in dimensions resize logic.
+		]]></release>
+		
 		<release version="1.1.4" date="2011-11-21"><![CDATA[
 			* Updates are now performed with error supression. No warnings will be issued.
 		]]></release>
+		
 		<release version="1.0" date="2011-11-15" min="2.0" />
 	</releases>
 
