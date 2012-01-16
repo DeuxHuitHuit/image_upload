@@ -3,8 +3,8 @@ Field: Image upload
 
 A specialized field for image uploads.
 
-* Version: 1.1.5
-* Build Date: 2012-01-15
+* Version: 1.1.6
+* Build Date: 2012-01-16
 * Authors:
 	- [Xander Group](http://www.xanderadvertising.com)
 	- Vlad Ghita

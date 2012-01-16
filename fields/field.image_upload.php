@@ -264,11 +264,11 @@
 		}
 		
 		public function processRawFieldData($data, &$status, $simulate = false, $entry_id = NULL) {
+			if( $data == null ) return parent::processRawFieldData($data, $status, $simulate, $entry_id);
+			
 			if( is_array($data) && isset($data['name']) && ($this->get('unique') == 'yes') ){
 				$data['name'] = $this->getUniqueFilename($data['name']);
 			}
-			
-			if( $data == null ) return parent::processRawFieldData($data, $status, $simulate, $entry_id);
 			
 			// file already exists in Symphony
 			if( is_string($data) ){
@@ -296,7 +296,7 @@
 				}
 			}
 			
-			// file is uploaded
+			// new file in Symphony
 			elseif( is_array($data) ){
 				
 				// 1. resize
@@ -343,31 +343,35 @@
 			$ratio = $img_width / $img_height;
 
 			// if width exceeds
-			if( $img_width > $max_width ){
+			if( ($img_width > $max_width) && ($max_width > 0) ){
 				$width = $max_width;
 				$height = 0;
 				
-				// if resulting height doesn't fit, resize from height
-				if( $width / $ratio > $max_height ){
-					$width = 0;
-					$height = $max_height;
+				if( $max_height > 0 ){
+					// if resulting height doesn't fit, resize from height
+					if( $width / $ratio > $max_height ){
+						$width = 0;
+						$height = $max_height;
+					}
 				}
 			}
 			
 			// if height exceeds
-			elseif( $img_height > $max_height ){
+			elseif( ($img_height > $max_height) && ($max_height > 0) ){
 				$width = 0;
 				$height = $max_height;
 				
-				// if resulting width doesn't fit, resize from width
-				if( $height / $ratio > $max_width ){
-					$width = $max_width;
-					$height = 0;
+				if( $max_width > 0 ){
+					// if resulting width doesn't fit, resize from width
+					if( $height / $ratio > $max_width ){
+						$width = $max_width;
+						$height = 0;
+					}
 				}
 			}
 			
 			return array(
-				'proceed' => ($width != 0 && $height != 0),
+				'proceed' => ($width != 0 || $height != 0),
 				'width' => $width,
 				'height' => $height
 			);
