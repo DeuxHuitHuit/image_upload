@@ -14,8 +14,8 @@
 		public function about() {
 			return array(
 				'name' => IMAGE_UPLOAD_NAME,
-				'version' => '1.1.6',
-				'release-date' => '2012-01-16',
+				'version' => '1.1.67',
+				'release-date' => '2012-03-13',
 				'author' => array(
 					array(
 						'name' => 'Xander Group',
