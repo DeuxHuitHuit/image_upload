@@ -1,39 +1,46 @@
 <?php
 
-	if (!defined('__IN_SYMPHONY__')) die('<h2>Symphony Error</h2><p>You cannot directly access this file</p>');
+	if( !defined('__IN_SYMPHONY__') ) die('<h2>Symphony Error</h2><p>You cannot directly access this file</p>');
 
-	require_once(TOOLKIT . '/fields/field.upload.php');
+	require_once(TOOLKIT.'/fields/field.upload.php');
 
 
 
-	class fieldImage_upload extends fieldUpload {
+	class fieldImage_upload extends fieldUpload
+	{
 
-		public function __construct(&$parent){
-			parent::__construct($parent);
+		/*------------------------------------------------------------------------------------------------*/
+		/*  Definition  */
+		/*------------------------------------------------------------------------------------------------*/
+
+		public function __construct(){
+			parent::__construct();
 
 			$this->_name = __('Image Upload');
 		}
 
 
 
-		/*-------------------------------------------------------------------------
-		 Utilities:
-	 -------------------------------------------------------------------------*/
+		/*------------------------------------------------------------------------------------------------*/
+		/*  Goodies  */
+		/*------------------------------------------------------------------------------------------------*/
 
 		/**
 		 * Resizes an Image to a given maximum width and height.
 		 *
-		 * @param string $file - absolute image path
-		 * @param integer $width - desired width of the image
-		 * @param integer $height - desired height of the image
-		 * @param string $mimetype - image type
+		 * @param string  $file     - absolute image path
+		 * @param integer $width    - desired width of the image
+		 * @param integer $height   - desired height of the image
+		 * @param string  $mimetype - image type
 		 *
 		 * @return boolean - true if success, false otherwise
 		 */
 		public static function resize($file, $width, $height, $mimetype){
+			$jit_status = ExtensionManager::fetchStatus(array('handle'=>'jit_image_manipulation'));
+
 			// process image using JIT mode 1
-			if( Symphony::ExtensionManager()->fetchStatus('jit_image_manipulation') == EXTENSION_ENABLED ){
-				require_once(EXTENSIONS . '/jit_image_manipulation/lib/class.image.php');
+			if( $jit_status[0] === EXTENSION_ENABLED ){
+				require_once(EXTENSIONS.'/jit_image_manipulation/lib/class.image.php');
 
 				/*@var $image Image */
 
@@ -41,12 +48,12 @@
 					$image = Image::load($file);
 
 					// if not and Image, stick with original version
-					if( !$image instanceof Image ) {
+					if( !$image instanceof Image ){
 						return false;
 					}
 				}
 					// if problems appear, stick with original version
-				catch(Exception $e){
+				catch( Exception $e ){
 					return false;
 				}
 
@@ -59,9 +66,9 @@
 
 
 
-		/*-------------------------------------------------------------------------
-		 Settings:
-	 -------------------------------------------------------------------------*/
+		/*------------------------------------------------------------------------------------------------*/
+		/*  Settings  */
+		/*------------------------------------------------------------------------------------------------*/
 
 		public function findDefaults(&$settings){
 			if( !isset($settings['unique']) ){
@@ -85,60 +92,49 @@
 			}
 		}
 
-		public function displaySettingsPanel(XMLElement &$wrapper, $errors = null) {
+		public function displaySettingsPanel(XMLElement &$wrapper, $errors = null){
 			parent::displaySettingsPanel($wrapper, $errors);
 
-			// append MinWidth, MinHeight, MaxWidth, MaxHeight and Unique
-			foreach( $wrapper->getChildrenByName('div') as $div ){
+			$div = new XMLElement('div',null,array('class' => 'two columns'));
 
-				if( $div->getAttribute('class') == 'compact' ){
+			$this->_addDimensionInput(
+				$div,
+				__('Minimum width (px)'),
+				'min_width',
+				__('If empty or 0, no minimum limit will be set.')
+			);
 
-					$div->appendChild(
-						$this->_addDimensionInput(
-							__('Minimum width (px)'),
-							'min_width',
-							__('If empty or 0, no minimum limit will be set.')
-						)
-					);
-					$div->appendChild(
-						$this->_addDimensionInput(
-							__('Minimum height (px)'),
-							'min_height',
-							__('If empty or 0, no minimum limit will be set.')
-						)
-					);
-					$div->appendChild(
-						$this->_addDimensionInput(
-							__('Maximum width (px)'),
-							'max_width',
-							__('If empty or 0, no maximum resize limit will be set.')
-						)
-					);
-					$div->appendChild(
-						$this->_addDimensionInput(
-							__('Maximum height (px)'),
-							'max_height',
-							__('If empty or 0, no maximum resize limit will be set.')
-						)
-					);
+			$this->_addDimensionInput(
+				$div,
+				__('Minimum height (px)'),
+				'min_height',
+				__('If empty or 0, no minimum limit will be set.')
+			);
 
-					$div->appendChild(
-						$this->_addUniqueCheckbox()
-					);
+			$this->_addDimensionInput(
+				$div,
+				__('Maximum width (px)'),
+				'max_width',
+				__('If empty or 0, no maximum resize limit will be set.')
+			);
 
-					break;
-				}
-			}
+			$this->_addDimensionInput(
+				$div,
+				__('Maximum height (px)'),
+				'max_height',
+				__('If empty or 0, no maximum resize limit will be set.')
+			);
+
+			$wrapper->appendChild($div);
+
+			$this->_addUniqueCheckbox($wrapper);
 		}
 
-		public function buildValidationSelect(XMLElement &$wrapper, $selected = null, $name='fields[validator]', $type='input'){
+		public function buildValidationSelect(XMLElement &$wrapper, $selected = null, $name = 'fields[validator]', $type = 'input'){
 
-			include(TOOLKIT . '/util.validators.php');
+			include(TOOLKIT.'/util.validators.php');
 
-			$label = Widget::Label(__('Validation Rule'));
-			$label->appendChild(
-				new XMLElement('i', __('Optional'))
-			);
+			$label = Widget::Label(__('Validation Rule'),new XMLElement('i', __('Optional')));
 			$label->appendChild(
 				Widget::Input($name, $selected != null ? $selected : $upload['image'])
 			);
@@ -156,45 +152,38 @@
 		/**
 		 * Append a dimension's Input HTML element.
 		 *
-		 * @param string $label_value - value of the label
-		 * @param string $setting - name of the setting
-		 * @param string $help_message - help message
+		 * @param XMLElement $wrapper      - the wrapper
+		 * @param string     $label_value  - value of the label
+		 * @param string     $setting      - name of the setting
+		 * @param string     $help_message - help message
 		 *
 		 * @return XMLElement - dimension element
 		 */
-		private function _addDimensionInput($label_value, $setting, $help_message){
-			$order = $this->get('sortorder');
-
+		private function _addDimensionInput(XMLElement &$wrapper, $label_value, $setting, $help_message){
 			$label = Widget::Label(
 				$label_value,
-				Widget::Input(
-					"fields[{$order}][{$setting}]",
-					sprintf('%s', $this->get($setting))
-				)
+				Widget::Input("fields[{$this->get('sortorder')}][{$setting}]", (string) $this->get($setting)),
+				'column'
 			);
 
 			$label->appendChild(
 				new XMLElement(
 					'p',
 					$help_message,
-					array('class' => 'help', 'style' => 'margin: 5px 0 0 0;')
+					array('class' => 'help', 'style' => 'margin: 0;')
 				)
 			);
 
-			return $label;
+			$wrapper->appendChild($label);
 		}
 
-		private function _addUniqueCheckbox() {
-			$order = $this->get('sortorder');
-
+		private function _addUniqueCheckbox(XMLElement &$wrapper){
 			$label = Widget::Label();
-			$input = Widget::Input("fields[{$order}][unique]", 'yes', 'checkbox');
-
-			if ($this->get('unique') == 'yes') $input->setAttribute('checked', 'checked');
-
+			$input = Widget::Input("fields[{$this->get('sortorder')}][unique]", 'yes', 'checkbox');
+			if( $this->get('unique') == 'yes' ) $input->setAttribute('checked', 'checked');
 			$label->setValue(__('%s Create unique filenames', array($input->generate())));
 
-			return $label;
+			$wrapper->appendChild($label);
 		}
 
 		public function commit(){
@@ -202,7 +191,7 @@
 
 			$id = $this->get('id');
 
-			if($id === false) return false;
+			if( $id === false ) return false;
 
 			$settings = array();
 
@@ -216,16 +205,16 @@
 			$settings['max_height'] = $this->get('max_height');
 
 			Symphony::Database()->query("DELETE FROM `tbl_fields_".$this->handle()."` WHERE `field_id` = '$id' LIMIT 1");
-			return Symphony::Database()->insert($settings, 'tbl_fields_' . $this->handle());
+			return Symphony::Database()->insert($settings, 'tbl_fields_'.$this->handle());
 		}
 
 
 
-		/*-------------------------------------------------------------------------
-		 Publish:
-	 -------------------------------------------------------------------------*/
+		/*------------------------------------------------------------------------------------------------*/
+		/*  Input  */
+		/*------------------------------------------------------------------------------------------------*/
 
-		public function checkPostFieldData($data, &$message, $entry_id = NULL) {
+		public function checkPostFieldData($data, &$message, $entry_id = NULL){
 			if( is_array($data) && isset($data['name']) && ($this->get('unique') == 'yes') ){
 				$data['name'] = $this->getUniqueFilename($data['name']);
 			}
@@ -243,7 +232,7 @@
 				}
 				// updated file
 				else if( is_string($data) ){
-					$tmp_name = WORKSPACE . $data;
+					$tmp_name = WORKSPACE.$data;
 					$type = 'image/jpg'; // send some dummy data
 				}
 
@@ -255,12 +244,12 @@
 					$min_height = $this->get('min_height');
 
 					if( !empty($min_width) && ($min_width != 0) && ($meta['width'] < $min_width) ){
-						$message .= __('Image must have a minimum width of %1$spx.', array($min_width) ).'<br />';
+						$message .= __('Image must have a minimum width of %1$spx.', array($min_width)).'<br />';
 						$error = self::__ERROR_CUSTOM__;
 					}
 
 					if( !empty($min_height) && ($min_height != 0) && $meta['height'] < $min_height ){
-						$message .= __('Image must have a minimum height of %1$spx.', array($min_height) );
+						$message .= __('Image must have a minimum height of %1$spx.', array($min_height));
 						$error = self::__ERROR_CUSTOM__;
 					}
 				}
@@ -273,8 +262,8 @@
 			return $error;
 		}
 
-		public function processRawFieldData($data, &$status, $simulate = false, $entry_id = NULL) {
-			if( $data == null ) return parent::processRawFieldData($data, $status, $simulate, $entry_id);
+		public function processRawFieldData($data, &$status, &$message, $simulate = false, $entry_id = NULL){
+			if( !is_array($data) || is_null($data) ) return parent::processRawFieldData($data, $status, $message, $simulate, $entry_id);
 
 			if( is_array($data) && isset($data['name']) && ($this->get('unique') == 'yes') ){
 				$data['name'] = $this->getUniqueFilename($data['name']);
@@ -284,22 +273,30 @@
 			if( is_string($data) ){
 
 				// 1. process Upload
-				$result = parent::processRawFieldData($data, $status, $simulate, $entry_id);
+				$result = parent::processRawFieldData($data, $status, $message, $simulate, $entry_id);
+
+				if( $result['mimetype'] === 'application/octet-stream' ){
+					if( function_exists('finfo_file') ){
+						$result['mimetype'] = finfo_file(finfo_open(FILEINFO_MIME_TYPE), $data['name']);
+					}
+				}
 
 				// 2. resize
-				$max_width = $this->get('max_width');
-				$max_height = $this->get('max_height');
+				if( $result['mimetype'] !== 'application/octet-stream' ){
+					$max_width = $this->get('max_width');
+					$max_height = $this->get('max_height');
 
-				if( (!empty($max_width) && ($max_width > 0)) || (!empty($max_height) && ($max_height > 0)) ){
+					if( (!empty($max_width) && ($max_width > 0)) || (!empty($max_height) && ($max_height > 0)) ){
 
-					if( is_file($file = WORKSPACE . $result['file']) ){
+						if( is_file($file = WORKSPACE.$result['file']) ){
 
-						$dimensions = $this->figureDimensions( self::getMetaInfo($file, $result['mimetype']) );
+							$dimensions = $this->figureDimensions(self::getMetaInfo($file, $result['mimetype']));
 
-						if( $dimensions['proceed'] ){
-							if( self::resize($file, $dimensions['width'], $dimensions['height'], $result['mimetype']) ){
-								$result['size'] = filesize($file);
-								$result['meta'] = serialize( self::getMetaInfo($file, $result['mimetype']) );
+							if( $dimensions['proceed'] ){
+								if( self::resize($file, $dimensions['width'], $dimensions['height'], $result['mimetype']) ){
+									$result['size'] = filesize($file);
+									$result['meta'] = serialize(self::getMetaInfo($file, $result['mimetype']));
+								}
 							}
 						}
 					}
@@ -317,7 +314,7 @@
 
 					if( is_file($file = $data['tmp_name']) ){
 
-						$dimensions = $this->figureDimensions( self::getMetaInfo($file, $data['type']) );
+						$dimensions = $this->figureDimensions(self::getMetaInfo($file, $data['type']));
 
 						if( $dimensions['proceed'] ){
 							if( self::resize($file, $dimensions['width'], $dimensions['height'], $data['type']) ){
@@ -328,7 +325,7 @@
 				}
 
 				// 2. process Upload
-				$result = parent::processRawFieldData($data, $status, $simulate, $entry_id);
+				$result = parent::processRawFieldData($data, $status, $message, $simulate, $entry_id);
 			}
 
 			return $result;
@@ -336,9 +333,9 @@
 
 
 
-		/*-------------------------------------------------------------------------
-		 In-house utilities:
-	 -------------------------------------------------------------------------*/
+		/*------------------------------------------------------------------------------------------------*/
+		/*  In-house  */
+		/*------------------------------------------------------------------------------------------------*/
 
 		protected function figureDimensions($meta){
 			$width = 0;
@@ -387,9 +384,9 @@
 			);
 		}
 
-		protected function getUniqueFilename($filename) {
+		protected function getUniqueFilename($filename){
 			// since unix timestamp is 10 digits, the unique filename will be limited to ($crop+1+10) characters;
-			$crop  = '150';
+			$crop = '150';
 			return preg_replace("/(.*)(\.[^\.]+)/e", "substr('$1', 0, $crop).'-'.time().'$2'", $filename);
 		}
 

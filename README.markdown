@@ -3,20 +3,17 @@ Field: Image upload
 
 A specialized field for image uploads.
 
-* Version: 1.1.7
-* Build Date: 2012-03-13
+* Version: 1.2
+* Build Date: 2012-05-11
 * Authors:
 	- [Xander Group](http://www.xanderadvertising.com)
 	- Vlad Ghita
 * Requirements:
-	- Symphony 2.0 or above
-	- If using maximum width / height, [JIT](https://github.com/symphonycms/jit_image_manipulation) is required
-
-Thank you all other Symphony & Extensions developers for your inspirational work.
+	- Symphony 2.3
+	- If using maximum width / height, [JIT 1.16](https://github.com/symphonycms/jit_image_manipulation) is required
 
 
-
-# 1 About #
+## 1 About ##
 
 A specialized version of the classic Upload field for images: 
 
@@ -28,8 +25,7 @@ A specialized version of the classic Upload field for images:
 **NB:** The resize takes places upon save, if needed, no matter new or edited entry.
 
 
-
-# 2 Installation #
+## 2 Installation ##
 
 1. Upload the `image_upload` folder found in this archive to your Symphony `extensions` folder.    
 2. Enable it by selecting `Image upload` under `System -> Extensions`, choose Enable from the with-selected menu, then click Apply.
