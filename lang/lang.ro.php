@@ -1,13 +1,13 @@
 <?php
 
 	$about = array(
-		'name' => '',
+		'name' => 'Romana',
 		'author' => array(
 			'name' => 'Vlad Ghita',
 			'email' => 'vlad.ghita@xandergroup.ro',
 			'website' => ''
 		),
-		'release-date' => '2011-11-15'
+		'release-date' => '2012-05-18'
 	);
 
 	/**

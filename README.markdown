@@ -1,16 +1,7 @@
 Field: Image upload
 ==============
 
-A specialized field for image uploads.
-
-* Version: 1.2
-* Build Date: 2012-05-11
-* Authors:
-	- [Xander Group](http://www.xanderadvertising.com)
-	- Vlad Ghita
-* Requirements:
-	- Symphony 2.3
-	- If using maximum width / height, [JIT 1.16](https://github.com/symphonycms/jit_image_manipulation) is required
+Github repo: https://github.com/vlad-ghita/image-upload
 
 
 ## 1 About ##

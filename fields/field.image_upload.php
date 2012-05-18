@@ -36,7 +36,7 @@
 		 * @return boolean - true if success, false otherwise
 		 */
 		public static function resize($file, $width, $height, $mimetype){
-			$jit_status = ExtensionManager::fetchStatus(array('handle'=>'jit_image_manipulation'));
+			$jit_status = ExtensionManager::fetchStatus(array('handle' => 'jit_image_manipulation'));
 
 			// process image using JIT mode 1
 			if( $jit_status[0] === EXTENSION_ENABLED ){
@@ -95,7 +95,7 @@
 		public function displaySettingsPanel(XMLElement &$wrapper, $errors = null){
 			parent::displaySettingsPanel($wrapper, $errors);
 
-			$div = new XMLElement('div',null,array('class' => 'two columns'));
+			$div = new XMLElement('div', null, array('class' => 'two columns'));
 
 			$this->_addDimensionInput(
 				$div,
@@ -134,7 +134,7 @@
 
 			include(TOOLKIT.'/util.validators.php');
 
-			$label = Widget::Label(__('Validation Rule'),new XMLElement('i', __('Optional')));
+			$label = Widget::Label(__('Validation Rule'), new XMLElement('i', __('Optional')));
 			$label->appendChild(
 				Widget::Input($name, $selected != null ? $selected : $upload['image'])
 			);
@@ -329,6 +329,40 @@
 			}
 
 			return $result;
+		}
+
+
+
+		/*------------------------------------------------------------------------------------------------*/
+		/*  Output  */
+		/*------------------------------------------------------------------------------------------------*/
+
+		public function prepareTableValue($data, XMLElement $link = NULL, $entry_id = null){
+			if( !$file = $data['file'] ){
+				if( $link ) return parent::prepareTableValue(null, $link);
+				else return parent::prepareTableValue(null);
+			}
+
+			if( $data['width'] > $data['height'] ){
+				$width = 40;
+				$height = 0;
+			}
+			else{
+				$width = 0;
+				$height = 40;
+			}
+
+			$image = '<img style="vertical-align: middle;" src="'.URL.'/image/1/'.$width.'/'.$height.$file.'" alt="'.$this->get('label').' of Entry '.$entry_id.'"/>';
+
+			if( $link ){
+				$link->setValue($image);
+				return $link->generate();
+			}
+
+			else{
+				$link = Widget::Anchor($image, URL.'/workspace'.$file);
+				return $link->generate();
+			}
 		}
 
 
