@@ -3,11 +3,11 @@
 	$about = array(
 		'name' => 'Romana',
 		'author' => array(
-			'name' => 'Vlad Ghita',
-			'email' => 'vlad.ghita@xandergroup.ro',
-			'website' => ''
+			'name' => 'Pablo Largo (Dev_NIX)',
+			'email' => 'devnix.code@gmail.com',
+			'website' => 'http://devtrance.com'
 		),
-		'release-date' => '2012-05-18'
+		'release-date' => '2012-11-15'
 	);
 
 	/**
