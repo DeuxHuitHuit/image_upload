@@ -253,22 +253,44 @@
 
 				$meta = self::getMetaInfo($tmp_name, $type);
 
+				// If we found some dimensions
 				if( isset($meta['width']) && isset($meta['height']) ){
 
 					$min_width = $this->get('min_width');
 					$min_height = $this->get('min_height');
+					$max_width = $this->get('max_width');
+					$max_height = $this->get('max_height');
 
-					if( !empty($min_width) && ($min_width != 0) && ($meta['width'] < $min_width) ){
-						$message .= __('Image must have a minimum width of %1$spx.', array($min_width)).'<br />';
+					// Min width
+					if( !empty($min_width) && ($min_width != 0) && ($meta['width'] < $min_width) ) {
+						if (strlen($message) > 0) { $message .= '<br />'; }
+						$message .= __('Image must have a minimum width of %1$spx.', array($min_width));
 						$error = self::__ERROR_CUSTOM__;
 					}
 
-					if( !empty($min_height) && ($min_height != 0) && $meta['height'] < $min_height ){
+					// Min height
+					if( !empty($min_height) && ($min_height != 0) && $meta['height'] < $min_height ) {
+						if (strlen($message) > 0) { $message .= '<br />'; }
 						$message .= __('Image must have a minimum height of %1$spx.', array($min_height));
 						$error = self::__ERROR_CUSTOM__;
 					}
+					
+					// Max width
+					if( !empty($max_width) && ($max_width != 0) && ($meta['width'] > $max_width) ) {
+						if (strlen($message) > 0) { $message .= '<br />'; }
+						$message .= __('Image must have a maximum width of %1$spx.', array($max_width));
+						$error = self::__ERROR_CUSTOM__;
+					}
+					
+					// Max height
+					if( !empty($max_height) && ($max_height != 0) && ($meta['height'] > $max_height) ) {
+						if (strlen($message) > 0) { $message .= '<br />'; }
+						$message .= __('Image must have a maximum height of %1$spx.', array($max_height));
+						$error = self::__ERROR_CUSTOM__;
+					}
 				}
-				elseif( is_array($data) && !empty($data['tmp_name']) ){
+				// No dimension found
+				else if( is_array($data) && !empty($data['tmp_name']) ){
 					$message .= __('Uploaded file is not an image.');
 					$error = self::__ERROR_CUSTOM__;
 				}
