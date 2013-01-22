@@ -34,25 +34,34 @@
 			);
 		}
 
-		public function update($previous_version){
-			if( version_compare($previous_version, '1.1', '<') ){
+		public function update($previous_version) {
+			// everything is OK by default
+			$ret = true;
+			
+			// Before 1.1
+			if ($ret && version_compare($previous_version, '1.1', '<') ){
 				$query = "ALTER TABLE `tbl_fields_image_upload`
 					ADD `max_width` int(11) unsigned,
 					ADD `max_height` int(11) unsigned,
 					DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci";
 
-				try{
-					Symphony::Database()->query($query);
-				}
-				catch( Exception $e ){
-				}
+				$ret = Symphony::Database()->query($query);
+			}
+			
+			// Before 1.3
+			if ($ret && version_compare($previous_version, '1.3', '<') ){
+				$query = "ALTER TABLE `tbl_fields_image_upload`
+							ADD `max_width` int(11) unsigned
+						";
+			
+				$ret = Symphony::Database()->query($query);
 			}
 
-			return true;
+			return $ret;
 		}
 
 		public function uninstall(){
-			Symphony::Database()->query("DROP TABLE `tbl_fields_image_upload`");
+			return Symphony::Database()->query("DROP TABLE `tbl_fields_image_upload`");
 		}
 
 	}
