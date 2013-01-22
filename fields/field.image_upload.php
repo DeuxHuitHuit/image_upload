@@ -275,18 +275,21 @@
 						$error = self::__ERROR_CUSTOM__;
 					}
 					
-					// Max width
-					if( !empty($max_width) && ($max_width != 0) && ($meta['width'] > $max_width) ) {
-						if (strlen($message) > 0) { $message .= '<br />'; }
-						$message .= __('Image must have a maximum width of %1$spx.', array($max_width));
-						$error = self::__ERROR_CUSTOM__;
-					}
-					
-					// Max height
-					if( !empty($max_height) && ($max_height != 0) && ($meta['height'] > $max_height) ) {
-						if (strlen($message) > 0) { $message .= '<br />'; }
-						$message .= __('Image must have a maximum height of %1$spx.', array($max_height));
-						$error = self::__ERROR_CUSTOM__;
+					// Check max only if resize is not active
+					if (!$this->isResizeActive()) {
+						// Max width
+						if( !empty($max_width) && ($max_width != 0) && ($meta['width'] > $max_width) ) {
+							if (strlen($message) > 0) { $message .= '<br />'; }
+							$message .= __('Image must have a maximum width of %1$spx.', array($max_width));
+							$error = self::__ERROR_CUSTOM__;
+						}
+						
+						// Max height
+						if( !empty($max_height) && ($max_height != 0) && ($meta['height'] > $max_height) ) {
+							if (strlen($message) > 0) { $message .= '<br />'; }
+							$message .= __('Image must have a maximum height of %1$spx.', array($max_height));
+							$error = self::__ERROR_CUSTOM__;
+						}
 					}
 				}
 				// No dimension found
