@@ -51,7 +51,7 @@
 			// Before 1.3
 			if ($ret && version_compare($previous_version, '1.3', '<') ){
 				$query = "ALTER TABLE `tbl_fields_image_upload`
-							ADD `max_width` int(11) unsigned
+							ADD COLUMN `resize` enum('yes','no') NOT NULL DEFAULT 'yes'
 						";
 			
 				$ret = Symphony::Database()->query($query);
