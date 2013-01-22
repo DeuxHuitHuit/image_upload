@@ -380,12 +380,19 @@
 			
 			$label = $this->getChildrenWithClass($wrapper, 'file', 'label');
 			if ($label != null) {
-				$label->prependChild($this->generateHelp());
+				// try to find the i element
+				$i = $this->getChildrenWithClass($wrapper, NULL, 'i');
+				if ($i == null) {
+					// create one and prepend it if nothing found
+					$i = new XMLElement('i');
+					$label->prependChild($i);
+				}
+				
+				$i->setValue($i->getValue() . ' ' . $this->generateHelpMessage());
 			}
 		}
 		
-		private function generateHelp() {
-			$i = new XMLElement('i');
+		private function generateHelpMessage() {
 			$sizeMessage = '';
 			$sizes = array();
 			$sizes[__('Min width')] = $this->get('min_width');
@@ -397,8 +404,7 @@
 					$sizeMessage .= $key . ': ' . $size . 'px, ';
 				}
 			}
-			$i->setValue(trim($sizeMessage, ', '));
-			return $i;
+			return trim($sizeMessage, ', ');
 		}
 
 		/*------------------------------------------------------------------------------------------------*/
