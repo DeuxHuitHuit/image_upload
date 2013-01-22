@@ -374,7 +374,32 @@
 			return $result;
 		}
 
-
+		public function displayPublishPanel(XMLElement &$wrapper, $data = null, $flagWithError = null, $fieldnamePrefix = null, $fieldnamePostfix = null, $entry_id = null) {
+			// Let the upload field do it's job
+			parent::displayPublishPanel($wrapper, $data, $flagWithError, $fieldnamePrefix, $fieldnamePostfix, $entry_id);
+			
+			$label = $this->getChildrenWithClass($wrapper, 'file', 'label');
+			if ($label != null) {
+				$label->prependChild($this->generateHelp());
+			}
+		}
+		
+		private function generateHelp() {
+			$i = new XMLElement('i');
+			$sizeMessage = '';
+			$sizes = array();
+			$sizes[__('Min width')] = $this->get('min_width');
+			$sizes[__('Min height')] = $this->get('min_height');
+			$sizes[__('Max width')] = $this->get('max_width');
+			$sizes[__('Max height')] = $this->get('max_height');
+			foreach ($sizes as $key => $size) {
+				if (!empty($size) && $size != 0) {
+					$sizeMessage .= $key . ': ' . $size . 'px, ';
+				}
+			}
+			$i->setValue(trim($sizeMessage, ', '));
+			return $i;
+		}
 
 		/*------------------------------------------------------------------------------------------------*/
 		/*  Output  */
@@ -469,6 +494,34 @@
 		
 		protected function isResizeActive() {
 			return $this->get('resize') == 'yes';
+		}
+		
+		private function getChildrenWithClass(XMLElement &$rootElement, $className, $tagName = NULL) {
+			if ($rootElement == NULL) {
+				return NULL;
+			}
+		
+			// contains the right css class and the right node name (if any)
+			// TODO: Use word bondaries instead of strpos
+			if (
+					(!$className || strpos($rootElement->getAttribute('class'), $className) > -1)
+					&&
+					(!$tagName || $rootElement->getName() == $tagName)
+			) {
+				return $rootElement;
+			}
+		
+			// recursive search in child elements
+			foreach ($rootElement->getChildren() as $key => $child) {
+		
+				$res = $this->getChildrenWithClass($child, $className, $tagName);
+		
+				if ($res != NULL) {
+					return $res;
+				}
+			}
+		
+			return NULL;
 		}
 
 	}
