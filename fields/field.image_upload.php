@@ -351,8 +351,10 @@
 				$width = 0;
 				$height = 40;
 			}
-
-			$image = '<img style="vertical-align: middle;" src="'.URL.'/image/1/'.$width.'/'.$height.$file.'" alt="'.$this->get('label').' of Entry '.$entry_id.'"/>';
+			
+			$destination = str_replace('/workspace', '', $this->get('destination')) . '/';
+			
+			$image = '<img style="vertical-align: middle;" src="'.URL.'/image/1/'.$width.'/'.$height.$destination.$file.'" alt="'.$this->get('label').' of Entry '.$entry_id.'"/>';
 
 			if( $link ){
 				$link->setValue($image);
@@ -360,7 +362,7 @@
 			}
 
 			else{
-				$link = Widget::Anchor($image, URL.'/workspace'.$file);
+				$link = Widget::Anchor($image, URL.$this->get('destination').'/'.$file);
 				return $link->generate();
 			}
 		}

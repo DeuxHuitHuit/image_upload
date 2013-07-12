@@ -47,6 +47,18 @@
 				catch( Exception $e ){
 				}
 			}
+			
+			if (version_compare($previous_version, '1.4', '<')) {
+				// Remove directory from the upload fields, #1719
+				$upload_tables = Symphony::Database()->fetchCol("field_id", "SELECT `field_id` FROM `tbl_fields_image_upload`");
+
+				if(is_array($upload_tables) && !empty($upload_tables)) foreach($upload_tables as $field) {
+					Symphony::Database()->query(sprintf(
+						"UPDATE tbl_entries_data_%d SET file = substring_index(file, '/', -1)",
+						$field
+					));
+				}
+			}
 
 			return true;
 		}
