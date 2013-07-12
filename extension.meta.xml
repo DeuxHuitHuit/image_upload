@@ -2,7 +2,7 @@
 
 <extension id="image_upload" status="released" xmlns="http://symphony-cms.com/schemas/extension/1.0">
 
-	<name>Image upload</name>
+	<name>Field: Image Upload</name>
 
 	<description>A specialized filed for uploading images with min width/height and maximum width/height restrictions.</description>
 
@@ -12,6 +12,8 @@
 
 	<types>
 		<type>Field Types</type>
+		<type>Image</type>
+		<type>Upload</type>
 	</types>
 
 	<authors>
