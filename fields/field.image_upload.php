@@ -362,7 +362,7 @@
 			}
 
 			else{
-				$link = Widget::Anchor($image, URL.'/workspace'.$file);
+				$link = Widget::Anchor($image, URL.$this->get('destination').'/'.$file);
 				return $link->generate();
 			}
 		}
