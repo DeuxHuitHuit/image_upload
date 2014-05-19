@@ -540,6 +540,10 @@
 			// recursive search in child elements
 			foreach($rootElement->getChildren() as $key => $child){
 
+				if (!($child instanceof XMLElement)) {
+					continue;
+				}
+
 				$res = $this->getChildrenWithClass( $child, $className, $tagName );
 
 				if( $res != null ){
