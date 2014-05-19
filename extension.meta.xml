@@ -29,6 +29,10 @@
 	</dependencies>
 
 	<releases>
+		<release version="1.5" date="2014-05-19" min="2.4.x"><![CDATA[
+			* Symphony 2.4 compatibility
+		]]></release>
+
 		<release version="1.4" date="2013-07-15" min="2.3.3"><![CDATA[
 			* Update for Symphony 2.3.2 release: Updating this extension will remove paths from the entries table.
 			See <https://github.com/symphonycms/symphony-2/issues/1719>.
