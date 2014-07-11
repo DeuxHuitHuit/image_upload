@@ -404,7 +404,7 @@
 					$label->prependChild( $i );
 				}
 
-				$i->setValue( $i->getValue().' '.$this->generateHelpMessage() );
+				$i->setValue( ' '.$this->generateHelpMessage() );
 			}
 		}
 
