@@ -411,10 +411,24 @@
 		private function generateHelpMessage(){
 			$sizeMessage               = '';
 			$sizes                     = array();
-			$sizes[__( 'Min width' )]  = $this->get( 'min_width' );
-			$sizes[__( 'Min height' )] = $this->get( 'min_height' );
-			$sizes[__( 'Max width' )]  = $this->get( 'max_width' );
-			$sizes[__( 'Max height' )] = $this->get( 'max_height' );
+			if ($this->get( 'min_width' ) == $this->get( 'max_width' ) && $this->get( 'min_height' ) == $this->get( 'max_height' )) {
+				$sizes[__( 'Width' )]  = $this->get( 'min_width' );
+				$sizes[__( 'Height' )] = $this->get( 'min_height' );
+			} else if ($this->get( 'min_width' ) == $this->get( 'max_width' )) {
+				$sizes[__( 'Width' )]  = $this->get( 'min_width' );
+				$sizes[__( 'Min height' )] = $this->get( 'min_height' );
+				$sizes[__( 'Max height' )] = $this->get( 'max_height' );
+			} else if ($this->get( 'min_height' ) == $this->get( 'max_height' )) {
+				$sizes[__( 'Min width' )] = $this->get( 'min_width' );
+				$sizes[__( 'Max width' )] = $this->get( 'max_width' );
+				$sizes[__( 'Height' )]  = $this->get( 'min_height' );
+			} else {
+				$sizes[__( 'Min width' )]  = $this->get( 'min_width' );
+				$sizes[__( 'Min height' )] = $this->get( 'min_height' );
+				$sizes[__( 'Max width' )]  = $this->get( 'max_width' );
+				$sizes[__( 'Max height' )] = $this->get( 'max_height' );
+			}
+			
 			foreach($sizes as $key => $size){
 				if( !empty($size) && $size != 0 ){
 					$sizeMessage .= $key.': '.$size.'px, ';
