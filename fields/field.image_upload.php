@@ -408,7 +408,7 @@
 			}
 		}
 
-		private function generateHelpMessage(){
+		protected function generateHelpMessage(){
 			$sizeMessage               = '';
 			$sizes                     = array();
 			if ($this->get( 'min_width' ) == $this->get( 'max_width' ) && $this->get( 'min_height' ) == $this->get( 'max_height' )) {
