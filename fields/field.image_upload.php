@@ -318,7 +318,7 @@
 			return $error;
 		}
 
-		public function processRawFieldData($data, &$status, &$message, $simulate = false, $entry_id = null){
+		public function processRawFieldData($data, &$status, &$message = null, $simulate = false, $entry_id = null){
 			if( !is_array( $data ) || is_null( $data ) ) return parent::processRawFieldData( $data, $status, $message, $simulate, $entry_id );
 
 			if( is_array( $data ) && isset($data['name']) && ($this->get( 'unique' ) == 'yes') ){
