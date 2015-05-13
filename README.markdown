@@ -1,7 +1,7 @@
 Field: Image upload
 ==============
 
-Github repo: https://github.com/vlad-ghita/image_upload
+Github repo: https://github.com/deuxhuithuit/image_upload
 
 
 ## 1 About ##

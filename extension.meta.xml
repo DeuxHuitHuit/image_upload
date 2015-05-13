@@ -1,13 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <extension id="image_upload" status="released" xmlns="http://symphony-cms.com/schemas/extension/1.0">
-
 	<name>Field: Image Upload</name>
-
 	<description>A specialized filed for uploading images with min width/height and maximum width/height restrictions.</description>
-
-	<repo type="github">https://github.com/vlad-ghita/image_upload</repo>
-
+	<repo type="github">https://github.com/DeuxHuitHuit/image_upload</repo>
 	<url type="discuss">http://symphony-cms.com/discuss/thread/80543/</url>
 
 	<types>
@@ -21,6 +17,10 @@
 			<name github="vlad-ghita" symphony="vladG">Vlad Ghita</name>
 			<email>vlad_micutul@yahoo.com</email>
 			<website>http://www.xanderadvertising.com</website>
+		</author>
+		<author>
+			<name github="DeuxHuitHuit" symphony="nitriques" twitter="DeuxHuitHuit">Deux Huit Huit</name>
+			<website>https://deuxhuithuit.com/</website>
 		</author>
 	</authors>
 
