@@ -6,6 +6,10 @@
 
 	class fieldImage_upload extends fieldUpload
 	{
+		protected static $svgMimeTypes = array(
+			'image/svg+xml',
+			'image/svg',
+		);
 
 		/*------------------------------------------------------------------------------------------------*/
 		/*  Definition  */
@@ -59,6 +63,32 @@
 
 			return true;
 		}
+		
+		protected static function removePx($value) {
+			return str_replace('px', '', $value);
+		}
+		
+		protected static function isSvg($type) {
+			return General::in_iarray($type, self::$svgMimeTypes);
+		}
+		
+		/**
+		 * Adds support for svg
+		 */
+		public static function getMetaInfo($file, $type) {
+			$metas = parent::getMetaInfo($file, $type);
+			if (self::isSvg($type)) {
+				$svg = @simplexml_load_file($file);
+				if ($svg != false) {
+					$svg->registerXPathNamespace('svg', 'http://www.w3.org/2000/svg');
+					$svgAttr = $svg->xpath('@width');
+					$metas['width'] = General::intval(self::removePx($svgAttr[0]->__toString()));
+					$svgAttr = $svg->xpath('@height');
+					$metas['height'] = General::intval(self::removePx($svgAttr[0]->__toString()));
+				}
+			}
+			return $metas;
+		}
 
 
 
@@ -76,7 +106,7 @@
 			}
 
 			if( !isset($settings['min_height']) ){
-				$settings['min_height'] = 20;
+				$settings['min_height'] = 0;
 			}
 
 			if( !isset($settings['max_width']) ){
@@ -149,7 +179,11 @@
 			$ul->appendChild(
 				new XMLElement('li', 'image', array('class' => $upload['image']))
 			);
-
+			if (isset($upload['image-svg'])) {
+				$ul->appendChild(
+					new XMLElement('li', 'image+svg', array('class' => $upload['image-svg']))
+				);
+			}
 			$wrapper->appendChild( $ul );
 
 		}
@@ -455,17 +489,23 @@
 
 			$destination = str_replace( '/workspace', '', $this->get( 'destination' ) ).'/';
 
-			$image = '<img style="vertical-align: middle;" src="'.URL.'/image/1/'.$width.'/'.$height.$destination.$file.'" alt="'.$this->get( 'label' ).' of Entry '.$entry_id.'"/>';
-
-			if( $link ){
-				$link->setValue( $image );
-				return $link->generate();
+			$src = '';
+			if (isset($data['mimetype']) && self::isSvg($data['mimetype'])) {
+				$src = URL . '/workspace' . $destination . $file;
 			}
+			else {
+				$src = URL . '/image/1/' . $width . '/' . $height . $destination . $file;
+			}
+			$image = '<img style="vertical-align: middle; max-height:40px;" src="' . $src . '" alt="'.$this->get( 'label' ).' of Entry '.$entry_id.'"/>';
 
+			if ($link){
+				$link->setValue( $image );
+			}
 			else{
 				$link = Widget::Anchor( $image, URL.$this->get( 'destination' ).'/'.$file );
-				return $link->generate();
 			}
+			
+			return $link->generate();
 		}
 
 
