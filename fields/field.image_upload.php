@@ -72,19 +72,19 @@
 			}
 
 			if( !isset($settings['min_width']) ){
-				$settings['min_width'] = 800;
+				$settings['min_width'] = 0;
 			}
 
 			if( !isset($settings['min_height']) ){
-				$settings['min_height'] = 600;
+				$settings['min_height'] = 20;
 			}
 
 			if( !isset($settings['max_width']) ){
-				$settings['max_width'] = 1600;
+				$settings['max_width'] = 1920;
 			}
 
 			if( !isset($settings['max_height']) ){
-				$settings['max_height'] = 1200;
+				$settings['max_height'] = 1080;
 			}
 
 			if( !isset($settings['resize']) ){
