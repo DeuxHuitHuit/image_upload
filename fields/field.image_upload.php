@@ -504,7 +504,7 @@
 			else{
 				$link = Widget::Anchor( $image, URL.$this->get( 'destination' ).'/'.$file );
 			}
-			
+			$link->setAttribute('data-path', $this->get('destination'));
 			return $link->generate();
 		}
 
