@@ -29,6 +29,16 @@
 	</dependencies>
 
 	<releases>
+		<release version="1.6.0" date="2015-05-25" min="2.4.x" max="2.6.x"><![CDATA[
+			* Symphony 2.6 compatibility
+			* Symphony 2.5 compatibility
+			* Added SVG support
+		]]></release>
+		
+		<release version="1.5.1" date="2014-08-04" min="2.4.x" max="2.4.x"><![CDATA[
+			* Minor UI fixes
+		]]></release>
+		
 		<release version="1.5" date="2014-05-19" min="2.4.x"><![CDATA[
 			* Symphony 2.4 compatibility
 		]]></release>
