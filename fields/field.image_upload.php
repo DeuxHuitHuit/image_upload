@@ -175,7 +175,10 @@
 			);
 			$wrapper->appendChild( $label );
 
-			$ul = new XMLElement('ul', null, array('class' => 'tags singular'));
+			$ul = new XMLElement('ul', null, array(
+				'class' => 'tags singular',
+				'data-interactive' => 'data-interactive'
+			));
 			$ul->appendChild(
 				new XMLElement('li', 'image', array('class' => $upload['image']))
 			);
