@@ -29,6 +29,9 @@
 	</dependencies>
 
 	<releases>
+		<release version="1.6.1" date="2015-08-11" min="2.4.x" max="2.6.x"><![CDATA[
+			* Bug fixes
+		]]></release>
 		<release version="1.6.0" date="2015-05-25" min="2.4.x" max="2.6.x"><![CDATA[
 			* Symphony 2.6 compatibility
 			* Symphony 2.5 compatibility
