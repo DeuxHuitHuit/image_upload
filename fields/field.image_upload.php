@@ -171,7 +171,7 @@
 
 			$label = Widget::Label( __( 'Validation Rule' ), new XMLElement('i', __( 'Optional' )) );
 			$label->appendChild(
-				Widget::Input( $name, $selected != null ? $selected : $upload['image'] )
+				Widget::Input( $name, $selected != null || $this->get('id') != null ? $selected : $upload['image'] )
 			);
 			$wrapper->appendChild( $label );
 
