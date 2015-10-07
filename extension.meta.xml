@@ -29,6 +29,9 @@
 	</dependencies>
 
 	<releases>
+		<release version="1.6.2" date="2015-10-07" min="2.4.x" max="2.6.x"><![CDATA[
+			*Support DS output param + implemented prepareTextValue
+		]]></release>
 		<release version="1.6.1" date="2015-08-11" min="2.4.x" max="2.6.x"><![CDATA[
 			* Bug fixes
 		]]></release>
