@@ -511,7 +511,20 @@
 			return $link->generate();
 		}
 
+		public function prepareTextValue($data, $entry_id = null){
+			if (!is_array($data)) {
+				return null;
+			}
+			return $data['file'];
+		}
 
+		public function allowDatasourceParamOutput() {
+			return true;
+		}
+
+		public function getParameterPoolValue($data) {
+			return $this->prepareTextValue($data);
+		}
 
 		/*------------------------------------------------------------------------------------------------*/
 		/*  In-house  */
