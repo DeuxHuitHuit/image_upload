@@ -16,13 +16,37 @@
 	$dictionary = array(
 
 		'Image Upload' =>
-		false,
+		'Envoie d\'image',
+
+		'Maximum width (px)' =>
+		'Largeur maximale (px)',
+
+		'Maximum height (px)' =>
+		'Hauteur maximale (px)',
 
 		'Minimum width (px)' =>
 		'Largeur minimale (px)',
 
 		'Minimum height (px)' =>
 		'Hauteur minimale (px)',
+
+		'Width' =>
+		'Largeur',
+
+		'Height' =>
+		'Hauteur',
+
+		'Min height' =>
+		'Hauteur min',
+
+		'Max height' =>
+		'Hauteur max',
+
+		'Min width' =>
+		'Largeur min',
+
+		'Max width' =>
+		'Largeur max',
 
 		'If empty or 0, no minimum limit will be set.' =>
 		'Si c\'est 0 ou vide, aucune limite sera imposée',
@@ -40,10 +64,10 @@
 		'L\'image doit avoir une hauteur minimale de %1$spx.',
 			
 		'Image must have a maximum width of %1$spx.' =>
-		'L\'image doit avoir une largeur minimale de %1$spx.',
+		'L\'image doit avoir une largeur maximum de %1$spx.',
 		
 		'Image must have a maximum height of %1$spx.' =>
-		'L\'image doit avoir une hauteur minimale de %1$spx.',
+		'L\'image doit avoir une hauteur maximum de %1$spx.',
 		
 		'%s Resize image to fit max values' =>
 		'%s Redimentionner l\'image pour atteindre les valeurs maximales',
