@@ -316,7 +316,7 @@
 					}
 				}
 
-				$meta = self::getMetaInfo( $tmp_name, $type );
+				$meta = static::getMetaInfo($tmp_name, $type);
 
 				// If we found some dimensions
 				if( isset($meta['width']) && isset($meta['height']) ){
