@@ -24,6 +24,9 @@
 		<dependency version="1.15">https://github.com/symphonycms/jit_image_manipulation</dependency>
 	</dependencies>
 	<releases>
+		<release version="1.6.4" date="2016-03-13" min="2.4.x" max="2.x.x"><![CDATA[
+			* Made resize = no by default (for new fields)
+		]]></release>
 		<release version="1.6.3" date="2016-02-26" min="2.4.x" max="2.x.x"><![CDATA[
 			* Fixed French Translation
 		]]></release>
