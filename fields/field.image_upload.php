@@ -377,41 +377,44 @@
 			return $error;
 		}
 
-		public function processRawFieldData($data, &$status, &$message = null, $simulate = false, $entry_id = null){
-			if( !is_array( $data ) || is_null( $data ) ) return parent::processRawFieldData( $data, $status, $message, $simulate, $entry_id );
+		public function processRawFieldData($data, &$status, &$message = null, $simulate = false, $entry_id = null)
+		{
+			if (!is_array($data) && !is_string($data)) {
+				return parent::processRawFieldData( $data, $status, $message, $simulate, $entry_id );
+			}
 
-			if( is_array( $data ) && isset($data['name']) && ($this->get( 'unique' ) == 'yes') ){
+			if (is_array($data) && isset($data['name']) && ($this->get( 'unique' ) == 'yes')) {
 				$data['name'] = $this->getUniqueFilename( $data['name'] );
 			}
 
+			$max_width  = $this->get('max_width');
+			$max_height = $this->get('max_height');
+
 			// file already exists in Symphony
-			if( is_string( $data ) ){
+			if (is_string($data)) {
 
 				// 1. process Upload
-				$result = parent::processRawFieldData( $data, $status, $message, $simulate, $entry_id );
+				$result = parent::processRawFieldData($data, $status, $message, $simulate, $entry_id);
 
 				// Find Mime if it was not submitted
-				if( $result['mimetype'] === 'application/octet-stream' ){
-					if( function_exists( 'finfo_file' ) ){
-						$result['mimetype'] = finfo_file( finfo_open( FILEINFO_MIME_TYPE ), $data['name'] );
+				if ($result['mimetype'] === 'application/octet-stream') {
+					if (function_exists( 'finfo_file')) {
+						$result['mimetype'] = finfo_file(finfo_open(FILEINFO_MIME_TYPE), $data['name']);
 					}
 				}
 
 				// 2. resize
-				if( $this->isResizeActive() && $result['mimetype'] !== 'application/octet-stream' ){
-					$max_width  = $this->get( 'max_width' );
-					$max_height = $this->get( 'max_height' );
+				if ($this->isResizeActive() &&
+					$result['mimetype'] !== 'application/octet-stream' &&
+					!static::isSvg($result['mimetype'])) {
 
-					if( (!empty($max_width) && ($max_width > 0)) || (!empty($max_height) && ($max_height > 0)) ){
-
-						if( is_file( $file = WORKSPACE.$result['file'] ) ){
-
-							$dimensions = $this->figureDimensions( self::getMetaInfo( $file, $result['mimetype'] ) );
-
-							if( $dimensions['proceed'] ){
-								if( self::resize( $file, $dimensions['width'], $dimensions['height'], $result['mimetype'] ) ){
-									$result['size'] = filesize( $file );
-									$result['meta'] = serialize( self::getMetaInfo( $file, $result['mimetype'] ) );
+					if ((!empty($max_width) && ($max_width > 0)) || (!empty($max_height) && ($max_height > 0))) {
+						if (is_file($file = WORKSPACE.$result['file'])) {
+							$dimensions = $this->figureDimensions(static::getMetaInfo($file, $result['mimetype']));
+							if ($dimensions['proceed']) {
+								if (self::resize( $file, $dimensions['width'], $dimensions['height'], $result['mimetype'])) {
+									$result['size'] = filesize($file);
+									$result['meta'] = serialize(static::getMetaInfo( $file, $result['mimetype']));
 								}
 							}
 						}
@@ -420,21 +423,16 @@
 			}
 
 			// new file in Symphony
-			elseif( is_array( $data ) ){
+			else if (is_array($data)) {
 
 				// 1. resize
-				if( $this->isResizeActive() ){
-					$max_width  = $this->get( 'max_width' );
-					$max_height = $this->get( 'max_height' );
+				if ($this->isResizeActive() && !static::isSvg($result['mimetype'])) {
 
-					if( (!empty($max_width) && ($max_width > 0)) || (!empty($max_height) && ($max_height > 0)) ){
-
-						if( is_file( $file = $data['tmp_name'] ) ){
-
-							$dimensions = $this->figureDimensions( self::getMetaInfo( $file, $data['type'] ) );
-
-							if( $dimensions['proceed'] ){
-								if( self::resize( $file, $dimensions['width'], $dimensions['height'], $data['type'] ) ){
+					if ((!empty($max_width) && ($max_width > 0)) || (!empty($max_height) && ($max_height > 0))) {
+						if (is_file($file = $data['tmp_name'])) {
+							$dimensions = $this->figureDimensions(static::getMetaInfo($file, $data['type']));
+							if ($dimensions['proceed']) {
+								if (self::resize($file, $dimensions['width'], $dimensions['height'], $data['type'])) {
 									$data['size'] = filesize( $file );
 								}
 							}
@@ -443,7 +441,7 @@
 				}
 
 				// 2. process Upload
-				$result = parent::processRawFieldData( $data, $status, $message, $simulate, $entry_id );
+				$result = parent::processRawFieldData($data, $status, $message, $simulate, $entry_id);
 			}
 
 			return $result;
