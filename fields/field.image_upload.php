@@ -96,73 +96,75 @@
 		/*  Settings  */
 		/*------------------------------------------------------------------------------------------------*/
 
-		public function findDefaults(&$settings){
-			if( !isset($settings['unique']) ){
+		public function findDefaults(&$settings)
+		{
+			if (!isset($settings['unique'])) {
 				$settings['unique'] = 'yes';
 			}
 
-			if( !isset($settings['min_width']) ){
+			if (!isset($settings['min_width'])) {
 				$settings['min_width'] = 0;
 			}
 
-			if( !isset($settings['min_height']) ){
+			if (!isset($settings['min_height'])) {
 				$settings['min_height'] = 0;
 			}
 
-			if( !isset($settings['max_width']) ){
+			if (!isset($settings['max_width'])) {
 				$settings['max_width'] = 1920;
 			}
 
-			if( !isset($settings['max_height']) ){
+			if (!isset($settings['max_height'])) {
 				$settings['max_height'] = 1080;
 			}
 
-			if( !isset($settings['resize']) ){
-				$settings['resize'] = 'yes';
+			if (!isset($settings['resize'])) {
+				$settings['resize'] = 'no';
 			}
 		}
 
-		public function displaySettingsPanel(XMLElement &$wrapper, $errors = null){
-			parent::displaySettingsPanel( $wrapper, $errors );
+		public function displaySettingsPanel(XMLElement &$wrapper, $errors = null)
+		{
+			parent::displaySettingsPanel($wrapper, $errors);
 
 			$div = new XMLElement('div', null, array('class' => 'two columns'));
 
-			$this->_addDimensionInput(
+			$this->addDimensionInput(
 				$div,
-				__( 'Minimum width (px)' ),
+				__('Minimum width (px)'),
 				'min_width',
-				__( 'If empty or 0, no minimum limit will be set.' )
+				__('If empty or 0, no minimum limit will be set.')
 			);
 
-			$this->_addDimensionInput(
+			$this->addDimensionInput(
 				$div,
-				__( 'Minimum height (px)' ),
+				__('Minimum height (px)'),
 				'min_height',
-				__( 'If empty or 0, no minimum limit will be set.' )
+				__('If empty or 0, no minimum limit will be set.')
 			);
 
-			$this->_addDimensionInput(
+			$this->addDimensionInput(
 				$div,
-				__( 'Maximum width (px)' ),
+				__('Maximum width (px)'),
 				'max_width',
-				__( 'If empty or 0, no maximum limit will be set. If resize is checked, max values will be used.' )
+				__('If empty or 0, no maximum limit will be set. If resize is checked, max values will be used.')
 			);
 
-			$this->_addDimensionInput(
+			$this->addDimensionInput(
 				$div,
-				__( 'Maximum height (px)' ),
+				__('Maximum height (px)'),
 				'max_height',
-				__( 'If empty or 0, no maximum limit will be set. If resize is checked, max values will be used.' )
+				__('If empty or 0, no maximum limit will be set. If resize is checked, max values will be used.')
 			);
 
-			$wrapper->appendChild( $div );
+			$wrapper->appendChild($div);
 
 			$div = new XMLElement('div', null, array('class' => 'two columns'));
 
-			$this->_addUniqueCheckbox( $div );
-			$this->_addResizeCheckbox( $div );
+			$this->addUniqueCheckbox($div);
+			$this->addResizeCheckbox($div);
 
-			$wrapper->appendChild( $div );
+			$wrapper->appendChild($div);
 		}
 
 		public function buildValidationSelect(XMLElement &$wrapper, $selected = null, $name = 'fields[validator]', $type = 'input'){
@@ -201,7 +203,7 @@
 		 *
 		 * @return XMLElement - dimension element
 		 */
-		private function _addDimensionInput(XMLElement &$wrapper, $label_value, $setting, $help_message){
+		protected function addDimensionInput(XMLElement &$wrapper, $label_value, $setting, $help_message){
 			$label = Widget::Label(
 				$label_value,
 				Widget::Input( "fields[{$this->get('sortorder')}][{$setting}]", (string) $this->get( $setting ) ),
@@ -219,22 +221,25 @@
 			$wrapper->appendChild( $label );
 		}
 
-		private function _addUniqueCheckbox(XMLElement &$wrapper){
+		protected function addUniqueCheckbox(XMLElement &$wrapper){
 			$label = Widget::Label( null, null, 'column' );
 			$input = Widget::Input( "fields[{$this->get('sortorder')}][unique]", 'yes', 'checkbox' );
-			if( $this->get( 'unique' ) == 'yes' ) $input->setAttribute( 'checked', 'checked' );
+			if ($this->get( 'unique' ) == 'yes') {
+				$input->setAttribute( 'checked', 'checked');
+			}
 			$label->setValue( __( '%s Create unique filenames', array($input->generate()) ) );
 
 			$wrapper->appendChild( $label );
 		}
 
-		private function _addResizeCheckbox(XMLElement &$wrapper){
+		protected function addResizeCheckbox(XMLElement &$wrapper){
 			$label = Widget::Label( null, null, 'column' );
 			$input = Widget::Input( "fields[{$this->get('sortorder')}][resize]", 'yes', 'checkbox' );
-			if( $this->get( 'resize' ) == 'yes' ) $input->setAttribute( 'checked', 'checked' );
-			$label->setValue( __( '%s Resize image to fit max values', array($input->generate()) ) );
-
-			$wrapper->appendChild( $label );
+			if ($this->get('resize') == 'yes') {
+				$input->setAttribute( 'checked', 'checked' );
+			}
+			$label->setValue(__( '%s Resize image to fit max values', array($input->generate())));
+			$wrapper->appendChild($label);
 		}
 
 		public function commit(){
