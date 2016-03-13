@@ -79,12 +79,34 @@
 			$metas = parent::getMetaInfo($file, $type);
 			if (self::isSvg($type)) {
 				$svg = @simplexml_load_file($file);
-				if ($svg != false) {
+				if (is_object($svg)) {
 					$svg->registerXPathNamespace('svg', 'http://www.w3.org/2000/svg');
+
 					$svgAttr = $svg->xpath('@width');
-					$metas['width'] = General::intval(self::removePx($svgAttr[0]->__toString()));
+					if (is_object($svgAttr)) {
+						$metas['width'] = floatval(self::removePx($svgAttr[0]->__toString()));
+					}
+
 					$svgAttr = $svg->xpath('@height');
-					$metas['height'] = General::intval(self::removePx($svgAttr[0]->__toString()));
+					if (is_object($svgAttr)) {
+						$metas['height'] = floatval(self::removePx($svgAttr[0]->__toString()));
+					}
+
+					if (!isset($metas['width']) || !isset($metas['height'])) {
+						$viewBoxes = array('@viewBox', '@viewbox');
+						foreach ($viewBoxes as $vb) {
+							$svgAttr = $svg->xpath($vb);
+							if (is_array($svgAttr) && !empty($svgAttr)) {
+								$matches = array();
+								$matches_count = preg_match('/^([-]?[\d\.]+)[\s]+([-]?[\d\.]+)[\s]+([\d\.]+)[\s]+([\d\.]+)[\s]?$/i', $svgAttr[0]->__toString(), $matches);
+								if ($matches_count == 1 && count($matches) == 5) {
+									$metas['width'] = floatval($matches[3]) - floatval($matches[1]);
+									$metas['height'] = floatval($matches[4]) - floatval($matches[2]);
+									break;
+								}
+							}
+						}
+					}
 				}
 			}
 			return $metas;
