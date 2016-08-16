@@ -547,7 +547,7 @@
 			return true;
 		}
 
-		public function getParameterPoolValue(array $data, $entry_id = NULL) {
+		public function getParameterPoolValue(array $data, $entry_id = null) {
 			return $this->prepareTextValue($data);
 		}
 
