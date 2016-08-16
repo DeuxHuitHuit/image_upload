@@ -35,7 +35,7 @@
 			);
 		}
 
-		public function update($previous_version) {
+		public function update($previousVersion = false) {
 			// everything is OK by default
 			$ret = true;
 

@@ -118,7 +118,7 @@
 		/*  Settings  */
 		/*------------------------------------------------------------------------------------------------*/
 
-		public function findDefaults(&$settings)
+		public function findDefaults(array &$settings)
 		{
 			if (!isset($settings['unique'])) {
 				$settings['unique'] = 'yes';
@@ -189,7 +189,7 @@
 			$wrapper->appendChild($div);
 		}
 
-		public function buildValidationSelect(XMLElement &$wrapper, $selected = null, $name = 'fields[validator]', $type = 'input'){
+		public function buildValidationSelect(XMLElement &$wrapper, $selected = null, $name = 'fields[validator]', $type = 'input', array $errors = null){
 
 			include(TOOLKIT.'/util.validators.php');
 
@@ -547,7 +547,7 @@
 			return true;
 		}
 
-		public function getParameterPoolValue($data) {
+		public function getParameterPoolValue(array $data, $entry_id = null) {
 			return $this->prepareTextValue($data);
 		}
 
