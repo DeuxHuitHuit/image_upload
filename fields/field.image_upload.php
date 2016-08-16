@@ -564,12 +564,8 @@
 			return true;
 		}
 
-<<<<<<< HEAD
-		public function getParameterPoolValue(array $data, $entry_id = null) {
-=======
-		public function getParameterPoolValue($data)
+		public function getParameterPoolValue(array $data, $entry_id = null)
 		{
->>>>>>> 1debb7f... Fix whitespaces
 			return $this->prepareTextValue($data);
 		}
 
