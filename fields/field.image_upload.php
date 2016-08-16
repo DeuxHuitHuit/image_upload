@@ -628,8 +628,9 @@
 		protected function getUniqueFilename($filename)
 		{
 			// since unix timestamp is 10 digits, the unique filename will be limited to ($crop+1+10) characters;
-			$crop = '150';
-			return preg_replace("/(.*)(\.[^\.]+)/e", "substr('$1', 0, $crop).'-'.time().'$2'", $filename);
+			return preg_replace_callback('/(.*)(\.[^\.]+)/', function ($matches) {
+				return substr($matches[1], 0, 150) . '-' . time() . $matches[2];
+			}, $filename);
 		}
 
 		protected function isResizeActive()
