@@ -189,7 +189,7 @@
 			$wrapper->appendChild($div);
 		}
 
-		public function buildValidationSelect(XMLElement &$wrapper, $selected = NULL, $name = 'fields[val...', $type = 'input', array $errors = NULL){
+		public function buildValidationSelect(XMLElement &$wrapper, $selected = NULL, $name = 'fields[validator]', $type = 'input', array $errors = NULL){
 
 			include(TOOLKIT.'/util.validators.php');
 
