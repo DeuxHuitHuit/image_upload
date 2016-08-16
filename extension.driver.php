@@ -36,7 +36,7 @@
 			$ret = true;
 
 			// Before 1.1
-			if ($ret && version_compare($previous_version, '1.1', '<')) {
+			if ($ret && version_compare($previousVersion, '1.1', '<')) {
 				$query = "ALTER TABLE `tbl_fields_image_upload`
 					ADD `max_width` int(11) unsigned,
 					ADD `max_height` int(11) unsigned,
@@ -50,7 +50,7 @@
 			}
 
 			// Before 1.3
-			if ($ret && version_compare($previous_version, '1.3', '<')) {
+			if ($ret && version_compare($previousVersion, '1.3', '<')) {
 				$query = "ALTER TABLE `tbl_fields_image_upload`
 							ADD COLUMN `resize` enum('yes','no') NOT NULL DEFAULT 'yes'";
 				try {
@@ -62,7 +62,7 @@
 			}
 
 			// Before 1.4
-			if ($ret && version_compare($previous_version, '1.4', '<')) {
+			if ($ret && version_compare($previousVersion, '1.4', '<')) {
 				// Remove directory from the upload fields, #1719
 				$upload_tables = Symphony::Database()->fetchCol("field_id", "SELECT `field_id` FROM `tbl_fields_image_upload`");
 
