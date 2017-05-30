@@ -542,7 +542,7 @@
 			else {
 				$src = URL . '/image/1/' . $width . '/' . $height . $destination . $file;
 			}
-			$image = '<img style="vertical-align: middle; max-height:40px;" src="' . $src . '" alt="'.$this->get('label').' of Entry '.$entry_id.'"/>';
+			$image = '<img src="' . $src . '" alt="'.$this->get('label').' of Entry '.$entry_id.'"/>';
 
 			if ($link) {
 				$link->setValue($image);
