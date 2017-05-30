@@ -61,17 +61,17 @@
 
 			return true;
 		}
-		
+
 		protected static function removePx($value)
 		{
 			return str_replace('px', '', $value);
 		}
-		
+
 		protected static function isSvg($type)
 		{
 			return General::in_iarray($type, self::$svgMimeTypes);
 		}
-		
+
 		/**
 		 * Adds support for svg
 		 */
@@ -497,7 +497,7 @@
 				$sizes[__('Max width')]  = $this->get('max_width');
 				$sizes[__('Max height')] = $this->get('max_height');
 			}
-			
+
 			foreach($sizes as $key => $size) {
 				if (!empty($size) && $size != 0) {
 					$sizeMessage .= $key.': '.$size.'px, ';
@@ -532,8 +532,11 @@
 
 			$destination = str_replace('/workspace', '', $this->get('destination')) . '/';
 
+			$extman = Symphony::ExtensionManager();
+			$status = $extman->fetchStatus(array('handle' => 'jit_image_manipulation'));
+
 			$src = '';
-			if (isset($data['mimetype']) && self::isSvg($data['mimetype'])) {
+			if ((isset($data['mimetype']) && self::isSvg($data['mimetype'])) || !in_array(EXTENSION_ENABLED, $status)) {
 				$src = URL . '/workspace' . $destination . $file;
 			}
 			else {
