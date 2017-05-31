@@ -466,13 +466,9 @@
 			if ($label != null) {
 				// try to find the i element
 				$i = $this->getChildrenWithClass($wrapper, null, 'i');
-				if ($i == null) {
-					// create one and prepend it if nothing found
-					$i = new XMLElement('i');
-					$label->prependChild($i);
+				if ($i != null) {
+					$i->setValue(' '.$this->generateHelpMessage());
 				}
-
-				$i->setValue(' '.$this->generateHelpMessage());
 			}
 		}
 
@@ -548,7 +544,7 @@
 				$link->setValue($image);
 			}
 			else{
-				$link = Widget::Anchor($image, URL.$this->get('destination').'/'.$file);
+				$link = Widget::Anchor($image, URL.$this->get('destination').'/'.$file, null, null, null, array('target' => '_blank'));
 			}
 			$link->setAttribute('data-path', $this->get('destination'));
 			return $link->generate();
