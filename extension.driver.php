@@ -15,16 +15,16 @@
 		{
 			return Symphony::Database()->query(
 				"CREATE TABLE `tbl_fields_image_upload` (
-				 `id` int(11) unsigned NOT NULL auto_increment,
-				 `field_id` int(11) unsigned NOT NULL,
-				 `destination` varchar(255) NOT NULL,
-				 `validator` varchar(50),
-				 `unique`  varchar(50),
-				 `min_width` int(11) unsigned,
-				 `min_height` int(11) unsigned,
-				 `max_width` int(11) unsigned,
-				 `max_height` int(11) unsigned,
-				 `resize` enum('yes','no') NOT NULL DEFAULT 'yes',
+				 `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+				 `field_id` INT(11) UNSIGNED NOT NULL,
+				 `destination` VARCHAR(255) NOT NULL,
+				 `validator` VARCHAR(50),
+				 `unique` VARCHAR(50),
+				 `min_width` INT(11) UNSIGNED,
+				 `min_height` INT(11) UNSIGNED,
+				 `max_width` INT(11) UNSIGNED,
+				 `max_height` INT(11) UNSIGNED,
+				 `resize` ENUM('yes','no') NOT NULL DEFAULT 'yes',
 				  PRIMARY KEY (`id`),
 				  KEY `field_id` (`field_id`)
 				) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;"
@@ -38,8 +38,8 @@
 			// Before 1.1
 			if ($ret && version_compare($previousVersion, '1.1', '<')) {
 				$query = "ALTER TABLE `tbl_fields_image_upload`
-					ADD `max_width` int(11) unsigned,
-					ADD `max_height` int(11) unsigned,
+					ADD `max_width` INT(11) UNSIGNED,
+					ADD `max_height` INT(11) UNSIGNED,
 					DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci";
 
 				try {
@@ -52,7 +52,7 @@
 			// Before 1.3
 			if ($ret && version_compare($previousVersion, '1.3', '<')) {
 				$query = "ALTER TABLE `tbl_fields_image_upload`
-							ADD COLUMN `resize` enum('yes','no') NOT NULL DEFAULT 'yes'";
+							ADD COLUMN `resize` ENUM('yes','no') NOT NULL DEFAULT 'yes'";
 				try {
 					$ret = Symphony::Database()->query($query);
 				}
