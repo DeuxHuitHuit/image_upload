@@ -80,7 +80,7 @@
 			if ($ret && version_compare($previousVersion, '1.4', '<')) {
 				// Remove directory from the upload fields, #1719
 				$upload_tables = Symphony::Database()
-					->select('field_id')
+					->select(['field_id'])
 					->from('tbl_fields_image_upload')
 					->execute()
 					->column('field_id');
