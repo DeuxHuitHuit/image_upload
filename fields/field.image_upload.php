@@ -37,10 +37,10 @@
 		 */
 		public static function resize($file, $width, $height, $mimetype)
 		{
-			$jit_status = ExtensionManager::fetchStatus(array('handle' => 'jit_image_manipulation'));
+			$jit_status = Symphony::ExtensionManager()->fetchStatus(array('handle' => 'jit_image_manipulation'));
 
 			// process image using JIT mode 1
-			if ($jit_status[0] === EXTENSION_ENABLED) {
+			if ($jit_status[0] === Extension::EXTENSION_ENABLED) {
 				require_once(EXTENSIONS.'/jit_image_manipulation/lib/class.image.php');
 
 				try {
