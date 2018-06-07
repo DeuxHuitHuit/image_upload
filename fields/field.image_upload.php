@@ -532,7 +532,7 @@
 			$status = $extman->fetchStatus(array('handle' => 'jit_image_manipulation'));
 
 			$src = '';
-			if ((isset($data['mimetype']) && self::isSvg($data['mimetype'])) || !in_array(EXTENSION_ENABLED, $status)) {
+			if ((isset($data['mimetype']) && self::isSvg($data['mimetype'])) || !in_array(Extension::EXTENSION_ENABLED, $status)) {
 				$src = URL . '/workspace' . $destination . $file;
 			}
 			else {
