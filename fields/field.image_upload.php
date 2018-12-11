@@ -9,6 +9,7 @@
 		protected static $svgMimeTypes = array(
 			'image/svg+xml',
 			'image/svg',
+			'text/plain',
 		);
 
 		/*------------------------------------------------------------------------------------------------*/
