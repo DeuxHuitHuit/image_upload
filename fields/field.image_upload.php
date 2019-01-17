@@ -289,10 +289,10 @@
 			$settings['destination'] = $this->get('destination');
 			$settings['validator']   = ($settings['validator'] == 'custom' ? null : $this->get('validator'));
 			$settings['unique']      = $this->get('unique');
-			$settings['min_width']   = $this->get('min_width');
-			$settings['min_height']  = $this->get('min_height');
-			$settings['max_width']   = $this->get('max_width');
-			$settings['max_height']  = $this->get('max_height');
+			$settings['min_width']   = (int)$this->get('min_width');
+			$settings['min_height']  = (int)$this->get('min_height');
+			$settings['max_width']   = (int)$this->get('max_width');
+			$settings['max_height']  = (int)$this->get('max_height');
 			$settings['resize']      = $this->get('resize') == 'yes' ? 'yes' : 'no';
 
 			return FieldManager::saveSettings($id, $settings);
