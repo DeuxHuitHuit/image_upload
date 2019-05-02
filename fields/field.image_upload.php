@@ -9,6 +9,8 @@
 		protected static $svgMimeTypes = array(
 			'image/svg+xml',
 			'image/svg',
+			'text/plain',
+			'application/octet-stream',
 		);
 
 		/*------------------------------------------------------------------------------------------------*/
@@ -37,10 +39,10 @@
 		 */
 		public static function resize($file, $width, $height, $mimetype)
 		{
-			$jit_status = ExtensionManager::fetchStatus(array('handle' => 'jit_image_manipulation'));
+			$jit_status = Symphony::ExtensionManager()->fetchStatus(array('handle' => 'jit_image_manipulation'));
 
 			// process image using JIT mode 1
-			if ($jit_status[0] === EXTENSION_ENABLED) {
+			if ($jit_status[0] === Extension::EXTENSION_ENABLED) {
 				require_once(EXTENSIONS.'/jit_image_manipulation/lib/class.image.php');
 
 				try {
@@ -61,17 +63,17 @@
 
 			return true;
 		}
-		
+
 		protected static function removePx($value)
 		{
 			return str_replace('px', '', $value);
 		}
-		
+
 		protected static function isSvg($type)
 		{
 			return General::in_iarray($type, self::$svgMimeTypes);
 		}
-		
+
 		/**
 		 * Adds support for svg
 		 */
@@ -287,10 +289,10 @@
 			$settings['destination'] = $this->get('destination');
 			$settings['validator']   = ($settings['validator'] == 'custom' ? null : $this->get('validator'));
 			$settings['unique']      = $this->get('unique');
-			$settings['min_width']   = $this->get('min_width');
-			$settings['min_height']  = $this->get('min_height');
-			$settings['max_width']   = $this->get('max_width');
-			$settings['max_height']  = $this->get('max_height');
+			$settings['min_width']   = (int)$this->get('min_width');
+			$settings['min_height']  = (int)$this->get('min_height');
+			$settings['max_width']   = (int)$this->get('max_width');
+			$settings['max_height']  = (int)$this->get('max_height');
 			$settings['resize']      = $this->get('resize') == 'yes' ? 'yes' : 'no';
 
 			return FieldManager::saveSettings($id, $settings);
@@ -466,13 +468,9 @@
 			if ($label != null) {
 				// try to find the i element
 				$i = $this->getChildrenWithClass($wrapper, null, 'i');
-				if ($i == null) {
-					// create one and prepend it if nothing found
-					$i = new XMLElement('i');
-					$label->prependChild($i);
+				if ($i != null) {
+					$i->setValue(' '.$this->generateHelpMessage());
 				}
-
-				$i->setValue(' '.$this->generateHelpMessage());
 			}
 		}
 
@@ -497,7 +495,7 @@
 				$sizes[__('Max width')]  = $this->get('max_width');
 				$sizes[__('Max height')] = $this->get('max_height');
 			}
-			
+
 			foreach($sizes as $key => $size) {
 				if (!empty($size) && $size != 0) {
 					$sizeMessage .= $key.': '.$size.'px, ';
@@ -532,20 +530,23 @@
 
 			$destination = str_replace('/workspace', '', $this->get('destination')) . '/';
 
+			$extman = Symphony::ExtensionManager();
+			$status = $extman->fetchStatus(array('handle' => 'jit_image_manipulation'));
+
 			$src = '';
-			if (isset($data['mimetype']) && self::isSvg($data['mimetype'])) {
+			if ((isset($data['mimetype']) && self::isSvg($data['mimetype'])) || !in_array(Extension::EXTENSION_ENABLED, $status)) {
 				$src = URL . '/workspace' . $destination . $file;
 			}
 			else {
 				$src = URL . '/image/1/' . $width . '/' . $height . $destination . $file;
 			}
-			$image = '<img style="vertical-align: middle; max-height:40px;" src="' . $src . '" alt="'.$this->get('label').' of Entry '.$entry_id.'"/>';
+			$image = '<img src="' . $src . '" alt="'.$this->get('label').' of Entry '.$entry_id.'"/>';
 
 			if ($link) {
 				$link->setValue($image);
 			}
 			else{
-				$link = Widget::Anchor($image, URL.$this->get('destination').'/'.$file);
+				$link = Widget::Anchor($image, URL.$this->get('destination').'/'.$file, null, null, null, array('target' => '_blank'));
 			}
 			$link->setAttribute('data-path', $this->get('destination'));
 			return $link->generate();
